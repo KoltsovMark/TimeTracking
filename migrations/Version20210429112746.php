@@ -20,7 +20,7 @@ final class Version20210429112746 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('
-            CREATE TABLE task (
+            CREATE TABLE tasks (
                 id INT AUTO_INCREMENT NOT NULL, 
                 title VARCHAR(255) NOT NULL, 
                 comment LONGTEXT DEFAULT NULL,
@@ -36,6 +36,6 @@ final class Version20210429112746 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE task');
+        $this->addSql('DROP TABLE tasks');
     }
 }

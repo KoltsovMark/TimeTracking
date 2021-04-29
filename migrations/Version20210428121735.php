@@ -14,7 +14,7 @@ final class Version20210428121735 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add users table';
     }
 
     public function up(Schema $schema): void
@@ -26,7 +26,8 @@ final class Version20210428121735 extends AbstractMigration
                 roles JSON NOT NULL, 
                 password VARCHAR(255) NOT NULL, 
                 created_at DATETIME NOT NULL, 
-                updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), 
+                updated_at DATETIME NOT NULL, 
+                UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), 
                 PRIMARY KEY(id)
             ) 
             DEFAULT CHARACTER SET utf8mb4 
