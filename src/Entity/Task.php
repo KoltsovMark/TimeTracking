@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
  * @ORM\Table(name="tasks")
+ * @JMS\ExclusionPolicy("all")
  */
 class Task
 {
@@ -18,27 +20,38 @@ class Task
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @JMS\Expose()
      */
     private $comment;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     private $timeSpent;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     */
+    private $date;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
+     * @JMS\Expose()
      */
     private $user;
 
@@ -91,6 +104,18 @@ class Task
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
