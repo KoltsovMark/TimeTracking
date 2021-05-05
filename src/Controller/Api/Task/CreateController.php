@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("tasks/", name="tasks_")
+ * @Route("tasks", name="tasks")
  */
 class CreateController extends AbstractFOSRestController
 {
@@ -28,7 +28,7 @@ class CreateController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("create", name="create", methods={"POST"})
+     * @Route("/create", name="_create", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_CREATOR')")
      *
      * @Rest\View(statusCode=201)
