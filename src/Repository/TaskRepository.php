@@ -83,7 +83,7 @@ class TaskRepository extends ServiceEntityRepository
         }
 
         if ($endDate) {
-            $criteria->andWhere(Criteria::expr()->lte('t.date', $startDate));
+            $criteria->andWhere(Criteria::expr()->lte('t.date', $endDate));
         }
 
         return $criteria;

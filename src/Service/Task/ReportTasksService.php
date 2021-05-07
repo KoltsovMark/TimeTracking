@@ -6,6 +6,8 @@ use App\Dto\Api\Task\GenerateTasksReportDto;
 use App\Factory\Api\Task\Dto\TasksReportDataDtoFactory;
 use App\Factory\Api\Task\File\TaskReportServiceFactory;
 use App\Repository\TaskRepository;
+use Doctrine\ORM\Id\UuidGenerator;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class ReportTasksService
@@ -62,7 +64,7 @@ class ReportTasksService
 
         $tasksReportDataDto = $this->tasksReportDataDtoFactory->createFromArray(
             [
-                'report_file_name' => 'test_task_report',
+                'report_file_name' => Uuid::uuid4()->toString(),
                 'tasks' => $this->taskRepository->findByUserAndDateRange(
                     $generateTasksReportDto->getUser(),
                     $generateTasksReportDto->getStartDate(),
