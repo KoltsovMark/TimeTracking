@@ -15,7 +15,7 @@ interface TaskFileReportInterface
      *
      * @param TasksReportDataDto $tasksReportDataDto
      */
-    public function generate(TasksReportDataDto $tasksReportDataDto): void;
+    public function generate(TasksReportDataDto $tasksReportDataDto): string;
     public function getWriterService(): AbstractWriterService;
     public function setWriterService(AbstractWriterService $writerService): AbstractTaskReportService;
 }

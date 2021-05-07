@@ -31,7 +31,7 @@ abstract class AbstractTaskReportService implements TaskFileReportInterface
     /**
      * @return string
      */
-    abstract protected function getFullPath(): string;
+    abstract protected function getPath(): string;
 
     /**
      * @return AbstractWriterService
@@ -55,9 +55,11 @@ abstract class AbstractTaskReportService implements TaskFileReportInterface
     /**
      * @param TasksReportDataDto $tasksReportDataDto
      */
-    public function generate(TasksReportDataDto $tasksReportDataDto): void
+    public function generate(TasksReportDataDto $tasksReportDataDto): string
     {
         $data = $this->prepareData($tasksReportDataDto);
-        $this->getWriterService()->write($tasksReportDataDto->getReportFileName(), $data, $this->getFullPath());
+        $fileName = $this->getWriterService()->write($tasksReportDataDto->getReportFileName(), $data, $this->getPath());
+
+        return $fileName;
     }
 }

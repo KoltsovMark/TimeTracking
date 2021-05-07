@@ -25,12 +25,14 @@ class CsvWriterService extends AbstractWriterService
      *
      * @throws UnsupportedDataType
      */
-    public function write(string $fileName, $data, string $path = null): void
+    public function write(string $fileName, $data, string $path = null): string
     {
         $this->validate($data);
 
         $fullPath = $this->getFullPath($fileName, $path);
         (new Csv())->save($fullPath, $data);
+
+        return $fullPath;
     }
 
     /**

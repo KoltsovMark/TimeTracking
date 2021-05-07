@@ -21,8 +21,10 @@ abstract class AbstractWriterService implements FileWriterInterface
      * @param string $fileName
      * @param $data
      * @param string|null $path
+     *
+     * @return string
      */
-    abstract public function write(string $fileName, $data, string $path = null): void;
+    abstract public function write(string $fileName, $data, string $path = null): string;
 
     /**
      * @param $data
@@ -43,7 +45,7 @@ abstract class AbstractWriterService implements FileWriterInterface
      *
      * @return string
      */
-    protected function getFullPath(string $fileName, string $path = null): string
+    public function getFullPath(string $fileName, string $path = null): string
     {
         if (empty($path)) {
             $fullPath = $fileName;

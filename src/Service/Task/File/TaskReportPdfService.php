@@ -55,7 +55,7 @@ class TaskReportPdfService extends AbstractTaskReportService
     /**
      * @return string
      */
-    protected function getFullPath(): string
+    protected function getPath(): string
     {
         return self::REPORTS_PATH . self::REPORTS_SUB_PATH;
     }

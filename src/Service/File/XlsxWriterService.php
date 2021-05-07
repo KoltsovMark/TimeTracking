@@ -16,7 +16,7 @@ class XlsxWriterService extends AbstractWriterService
 {
     protected string $extension = 'xlsx';
 
-    public function write(string $fileName, $data, string $path = null): void
+    public function write(string $fileName, $data, string $path = null): string
     {
         $this->validate($data);
 
@@ -27,6 +27,8 @@ class XlsxWriterService extends AbstractWriterService
 
         $writer = new Xlsx($spreadsheet);
         $writer->save($fullPath);
+
+        return $fullPath;
     }
 
     /**

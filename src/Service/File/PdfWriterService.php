@@ -62,7 +62,7 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
      *
      * @throws UnsupportedDataType
      */
-    public function write(string $fileName, $data, string $path = null):void
+    public function write(string $fileName, $data, string $path = null): string
     {
         $this->validate($data);
 
@@ -72,6 +72,8 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
         $dompdf->setPaper($this->getConfiguration()->getPaper(), $this->getConfiguration()->getOrientation());
         $dompdf->render();
         $this->filesystem->dumpFile($fullPath, $dompdf->output());
+
+        return $fullPath;
     }
 
     /**

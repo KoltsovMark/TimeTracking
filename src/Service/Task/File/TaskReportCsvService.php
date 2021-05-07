@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Task\File;
 
-use App\Dto\Api\Task\TasksReportDataDto;
 use App\Service\File\CsvWriterService;
+use App\Traits\Task\File\SimpleTaskReportTableTrait;
 
 /**
  * Class TaskReportCsvService
@@ -13,16 +13,9 @@ use App\Service\File\CsvWriterService;
  */
 class TaskReportCsvService extends AbstractTaskReportService
 {
+    use SimpleTaskReportTableTrait;
+
     public const REPORTS_SUB_PATH = '/csv';
-    public const TITLES = [
-        'Title',
-        'Comment',
-        'Time',
-        'Date',
-        'Email',
-        'Total Tasks',
-        'Total Time Spent',
-    ];
 
     /**
      * TaskReportCsvService constructor.
@@ -35,42 +28,9 @@ class TaskReportCsvService extends AbstractTaskReportService
     }
 
     /**
-     * @param TasksReportDataDto $tasksReportDataDto
-     *
-     * @return array
-     */
-    protected function prepareData(TasksReportDataDto $tasksReportDataDto): array
-    {
-        $data[] = self::TITLES;
-        $data[] = [
-            null,
-            null,
-            null,
-            null,
-            null,
-            $tasksReportDataDto->getTotalTasks(),
-            $tasksReportDataDto->getTotalTime()
-        ];
-
-        foreach ($tasksReportDataDto->getTasks() as $task) {
-            $data[] = [
-                $task->getTitle(),
-                $task->getComment(),
-                $task->getTimeSpent(),
-                $task->getDate()->format('Y-m-d'),
-                $task->getUser()->getEmail(),
-                null,
-                null,
-            ];
-        }
-
-        return $data;
-    }
-
-    /**
      * @return string
      */
-    protected function getFullPath(): string
+    protected function getPath(): string
     {
         return self::REPORTS_PATH . self::REPORTS_SUB_PATH;
     }
