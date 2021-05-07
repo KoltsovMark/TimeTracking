@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .w-100 {
+            width:100%;
+        }
+        .content {
+            width: auto;
+            margin: 0 15px;
+        }
+        .table-solid tbody tr td {
+            border:2px solid black;
+        }
+    </style>
+    <head>
+        <title>Tasks</title>
+    </head>
+    <body>
+        <div id="body" style="font-family: DejaVu Sans, sans-serif;">
+            <div class="content">
+                <div class="page" style="font-size: 9pt">
+                    <table class="w-100" style="font-size: 9pt">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Comment</th>
+                                <th>Time</th>
+                                <th>Date</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in data.tasks %}
+                                <tr>
+                                    <td>{{ task.title }}</td>
+                                    <td>{{ task.comment }}</td>
+                                    <td>{{ task.timeSpent }}</td>
+                                    <td>{{ task.date|date }}</td>
+                                    <td>{{ task.user.email }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <table class="w-100" style="font-size: 9pt">
+                        <tbody>
+                            <tr>
+                                <td><b>Total tasks</b></td>
+                                <td>{{ data.totalTasks }}</td>
+                                <td><b>Total time (m)</b></td>
+                                <td>{{ data.totalTime }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
