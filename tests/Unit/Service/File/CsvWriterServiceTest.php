@@ -127,7 +127,7 @@ class CsvWriterServiceTest extends KernelTestCase
 
     protected function getCsvWriterServicePartialMock(array $methods = []): CsvWriterService
     {
-        $partialMock = $this->getPartialMock(CsvWriterService::class, $methods);
+        $partialMock = $this->createPartialMock(CsvWriterService::class, $methods);
 
         $this->setPrivateProperty(
             $partialMock,

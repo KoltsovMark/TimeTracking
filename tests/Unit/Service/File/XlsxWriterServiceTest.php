@@ -192,6 +192,6 @@ class XlsxWriterServiceTest extends KernelTestCase
      */
     protected function getXlsxWriterServicePartialMock(array $methods = []): XlsxWriterService
     {
-        return  $this->getPartialMock(XlsxWriterService::class, $methods);
+        return  $this->createPartialMock(XlsxWriterService::class, $methods);
     }
 }

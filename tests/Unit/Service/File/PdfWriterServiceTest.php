@@ -207,7 +207,7 @@ class PdfWriterServiceTest extends KernelTestCase
      */
     protected function getPdfWriterServicePartialMock(array $methods = []): PdfWriterService
     {
-        $partialMock = $this->getPartialMock(PdfWriterService::class, $methods);
+        $partialMock = $this->createPartialMock(PdfWriterService::class, $methods);
         $this->setPrivateProperty(
             $partialMock,
             PdfWriterService::class,

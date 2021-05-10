@@ -13,17 +13,6 @@ use ReflectionClass;
 trait AccessiblePrivatePropertyTrait
 {
     /**
-     * @param string $class
-     * @param array $methods
-     *
-     * @return object
-     */
-    protected function getPartialMock(string $class, array $methods = []): object
-    {
-        return $this->createPartialMock($class, $methods);
-    }
-
-    /**
      * @param object $object
      * @param string $class
      * @param string $name
