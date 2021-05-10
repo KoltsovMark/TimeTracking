@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Task;
 
 use App\Dto\Api\Task\GenerateTasksReportDto;
 use App\Factory\Api\Task\Dto\TasksReportDataDtoFactory;
 use App\Factory\Api\Task\File\TaskReportServiceFactory;
 use App\Repository\TaskRepository;
-use Doctrine\ORM\Id\UuidGenerator;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -64,7 +65,7 @@ class ReportTasksService
 
         $tasksReportDataDto = $this->tasksReportDataDtoFactory->createFromArray(
             [
-                'report_file_name' => Uuid::uuid4()->toString(),
+                'report_file_name' => $this->generateFileName(),
                 'tasks' => $this->taskRepository->findByUserAndDateRange(
                     $generateTasksReportDto->getUser(),
                     $generateTasksReportDto->getStartDate(),
@@ -77,5 +78,13 @@ class ReportTasksService
 
         //@todo add generation by chunks when it possible
         return $reportWriter->generate($tasksReportDataDto);
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateFileName(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 }
