@@ -21,3 +21,7 @@
 
 .idea
 /public/reports
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

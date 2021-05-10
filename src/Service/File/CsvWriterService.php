@@ -19,6 +19,19 @@ class CsvWriterService extends AbstractWriterService
     protected string $extension = 'csv';
 
     /**
+     * @var Csv
+     */
+    protected Csv $csvExtension;
+
+    /**
+     * CsvWriterService constructor.
+     */
+    public function __construct()
+    {
+        $this->csvExtension = new Csv();
+    }
+
+    /**
      * @param string $fileName
      * @param $data
      * @param string|null $path
@@ -30,7 +43,7 @@ class CsvWriterService extends AbstractWriterService
         $this->validate($data);
 
         $fullPath = $this->getFullPath($fileName, $path);
-        (new Csv())->save($fullPath, $data);
+        $this->csvExtension->save($fullPath, $data);
 
         return $fullPath;
     }

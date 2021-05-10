@@ -20,11 +20,11 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
     /**
      * @var Filesystem
      */
-    private Filesystem $filesystem;
+    protected Filesystem $filesystem;
     /**
      * @var PdfWriterConfiguration
      */
-    private PdfWriterConfiguration $configuration;
+    protected PdfWriterConfiguration $configuration;
 
     /**
      * PdfWriterService constructor.
@@ -67,7 +67,7 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
         $this->validate($data);
 
         $fullPath = $this->getFullPath($fileName, $path);
-        $dompdf = new Dompdf();
+        $dompdf = $this->getDompdf();
         $dompdf->loadHtml($data);
         $dompdf->setPaper($this->getConfiguration()->getPaper(), $this->getConfiguration()->getOrientation());
         $dompdf->render();
@@ -86,5 +86,10 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
         if ( ! is_string($data)) {
             throw new UnsupportedDataType();
         }
+    }
+
+    protected function getDompdf(): Dompdf
+    {
+        return new Dompdf();
     }
 }
