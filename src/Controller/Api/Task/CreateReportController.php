@@ -40,7 +40,7 @@ class CreateReportController extends AbstractFOSRestController
          * @todo add additional endpoint for show file to improve usability
          */
         $form = $this->createForm(GenerateTasksReportType::class);
-        $form->submit($request->query->all());
+        $form->submit($request->request->all());
 
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             return $form;
