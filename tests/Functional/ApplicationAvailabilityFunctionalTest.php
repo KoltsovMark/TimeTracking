@@ -10,11 +10,18 @@ use App\Entity\User;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class ApplicationAvailabilityFunctionalTest
+ * @package App\Tests\Functional
+ */
 class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
     use FixturesTrait;
 
-    protected $jwtToken;
+    /**
+     * @var string 
+     */
+    protected string $jwtToken;
 
     /**
      * @dataProvider urlProvider
@@ -26,6 +33,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         array $params = []
     ) {
         $headers = [
+            'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ];
 
@@ -35,7 +43,14 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
             $client->setServerParameter('HTTP_AUTHORIZATION', sprintf('Bearer %s', $this->jwtToken));
         }
 
-        $client->request($method, $url, $params);
+        $client->request(
+            $method,
+            $url,
+            [],
+            [],
+            [],
+            \json_encode($params)
+        );
 
         if ($client->getResponse()->getStatusCode() != 201 && $client->getResponse()->isRedirect())
         {
@@ -45,9 +60,21 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    /**
+     * @return array[]
+     */
     public function urlProvider(): array
     {
         return [
+            [
+                'url' => 'api/login',
+                'method' => 'GET',
+                'auth' => false,
+                'params' => [
+                    'username' => 'admin@example.com',
+                    'password' => '12345qwerty',
+                ]
+            ],
             [
                 'url' => 'api/tasks',
                 'method' => 'GET',
@@ -92,7 +119,6 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
            TaskFixtures::class,
         ]);
 
-        //@todo move login to a separate action
         self::bootKernel();
 
         $user = self::$container->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'admin@example.com']);
