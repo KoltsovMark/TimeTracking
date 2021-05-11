@@ -12,6 +12,13 @@ use App\Contract\File\FileWriterInterface;
  */
 abstract class AbstractWriterService implements FileWriterInterface
 {
+    protected string $projectDir;
+
+    public function __construct(string $projectDir)
+    {
+        $this->projectDir = $projectDir;
+    }
+
     /**
      * @var string
      */
@@ -50,7 +57,7 @@ abstract class AbstractWriterService implements FileWriterInterface
         if (empty($path)) {
             $fullPath = $fileName;
         } else {
-            $fullPath = "{$path}/{$fileName}";
+            $fullPath = "{$this->projectDir}/public/{$path}/{$fileName}";
         }
 
         return "{$fullPath}.{$this->getExtension()}";

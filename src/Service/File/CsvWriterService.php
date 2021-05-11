@@ -26,8 +26,10 @@ class CsvWriterService extends AbstractWriterService
     /**
      * CsvWriterService constructor.
      */
-    public function __construct()
+    public function __construct(string $projectDir)
     {
+        parent::__construct($projectDir);
+
         $this->csvExtension = new Csv();
     }
 

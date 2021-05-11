@@ -32,8 +32,10 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
      * @param Filesystem $filesystem
      * @param PdfWriterConfiguration $configuration
      */
-    public function __construct(Filesystem $filesystem, PdfWriterConfiguration $configuration)
+    public function __construct(string $projectDir, Filesystem $filesystem, PdfWriterConfiguration $configuration)
     {
+        parent::__construct($projectDir);
+
         $this->filesystem = $filesystem;
 
         $this->setConfiguration($configuration);

@@ -22,6 +22,8 @@ class XlsxWriterServiceTest extends KernelTestCase
 {
     use AccessiblePrivatePropertyTrait;
 
+    private string $projectPublicDirectory;
+
     /**
      * @var PdfWriterService|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -47,7 +49,7 @@ class XlsxWriterServiceTest extends KernelTestCase
     public function testWrite(string $fileName, array $data, string $expectedPath)
     {
         $partialMock = $this->getXlsxWriterServicePartialMock(['validate', 'getFullPath', 'getSpreadsheet', 'getXlsx']);
-        $expectedFullPath = "{$expectedPath}/{$fileName}.xlsx";
+        $expectedFullPath = "$this->projectPublicDirectory/{$expectedPath}/{$fileName}.xlsx";
 
         $partialMock
             ->expects($this->once())
@@ -153,7 +155,7 @@ class XlsxWriterServiceTest extends KernelTestCase
      */
     public function testGetFullPath(string $fileName, string $path)
     {
-        $expectedPath = "{$path}/{$fileName}.xlsx";
+        $expectedPath = "$this->projectPublicDirectory/{$path}/{$fileName}.xlsx";
         $fullPath = self::$container->get(XlsxWriterService::class)->getFullPath($fileName, $path);
 
         $this->assertEquals($expectedPath, $fullPath);
@@ -178,6 +180,7 @@ class XlsxWriterServiceTest extends KernelTestCase
 
         self::bootKernel();
 
+        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir') . '/public';
         $this->pdfWriterService = $this->createMock(PdfWriterService::class);
 
         $this->spreadsheetMock = $this->createMock(Spreadsheet::class);
