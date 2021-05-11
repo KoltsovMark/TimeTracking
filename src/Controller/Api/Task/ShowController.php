@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Task;
 
+use App\Controller\Api\BaseController;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("tasks", name="tasks")
  */
-class ShowController extends AbstractFOSRestController
+class ShowController extends BaseController
 {
     private TaskRepository $taskRepository;
     private PaginatorInterface $paginator;

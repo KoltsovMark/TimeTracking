@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Task;
 
+use App\Controller\Api\BaseController;
 use App\Factory\Api\Task\Dto\GenerateTasksReportDtoFactory;
 use App\Form\Api\Task\GenerateTasksReportType;
 use App\Service\Task\ReportTasksService;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("tasks/report", name="tasks_report")
  */
-class CreateReportController extends AbstractFOSRestController
+class CreateReportController extends BaseController
 {
     private GenerateTasksReportDtoFactory $generateTasksReportDtoFactory;
     private ReportTasksService $reportTasksService;
@@ -39,8 +40,7 @@ class CreateReportController extends AbstractFOSRestController
          * @todo Add queue for background generation
          * @todo add additional endpoint for show file to improve usability
          */
-        $form = $this->createForm(GenerateTasksReportType::class);
-        $form->submit($request->request->all());
+        $form = $this->createApiForm(GenerateTasksReportType::class, $request);
 
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             return $form;

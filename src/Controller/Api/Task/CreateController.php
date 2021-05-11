@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Task;
 
+use App\Controller\Api\BaseController;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Form\Api\Task\CreateTaskType;
 use App\Service\Task\CreateTaskService;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("tasks", name="tasks")
  */
-class CreateController extends AbstractFOSRestController
+class CreateController extends BaseController
 {
     private CreateTaskDtoFactory $createTaskDtoFactory;
     private CreateTaskService $createTaskService;
@@ -35,8 +36,7 @@ class CreateController extends AbstractFOSRestController
      */
     public function createTask(Request $request)
     {
-        $form = $this->createForm(CreateTaskType::class);
-        $form->submit($request->request->all());
+        $form = $this->createApiForm(CreateTaskType::class, $request);
 
         if ( ! $form->isSubmitted() || ! $form->isValid()) {
             return $form;
