@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\Range;
 
 class CreateTaskType extends AbstractType
 {
@@ -30,6 +31,7 @@ class CreateTaskType extends AbstractType
             'constraints' => [
                 new NotBlank(),
                 new Positive(),
+                new Range(['max' => 4294967295]),
             ],
         ])->add('date', DateTimeType::class, [
             'widget' => 'single_text',
