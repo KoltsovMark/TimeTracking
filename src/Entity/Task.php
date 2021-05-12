@@ -19,7 +19,7 @@ class Task
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      * @JMS\Expose()
      */
     private $id;
@@ -31,6 +31,8 @@ class Task
     private $title;
 
     /**
+     * @todo move to a separate table on a big data sets
+     *
      * @ORM\Column(type="text", nullable=true)
      * @JMS\Expose()
      */
