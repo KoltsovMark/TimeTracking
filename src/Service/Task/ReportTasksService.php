@@ -11,30 +11,18 @@ use App\Repository\TaskRepository;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Class ReportTasksService
- * @package App\Service\Task
+ * Class ReportTasksService.
  */
 class ReportTasksService
 {
-    /**
-     * @var TaskReportServiceFactory
-     */
     private TaskReportServiceFactory $taskReportServiceFactory;
-    /**
-     * @var TasksReportDataDtoFactory
-     */
+
     private TasksReportDataDtoFactory $tasksReportDataDtoFactory;
-    /**
-     * @var TaskRepository
-     */
+
     private TaskRepository $taskRepository;
 
     /**
      * ReportTasksService constructor.
-     *
-     * @param TaskReportServiceFactory $taskReportServiceFactory
-     * @param TasksReportDataDtoFactory $tasksReportDataDtoFactory
-     * @param TaskRepository $taskRepository
      */
     public function __construct(
         TaskReportServiceFactory $taskReportServiceFactory,
@@ -47,9 +35,6 @@ class ReportTasksService
     }
 
     /**
-     * @param GenerateTasksReportDto $generateTasksReportDto
-     *
-     * @return string
      * @throws \App\Exception\Factory\UnsupportedFactoryObject
      */
     public function generateReport(GenerateTasksReportDto $generateTasksReportDto): string
@@ -80,9 +65,6 @@ class ReportTasksService
         return $reportWriter->generate($tasksReportDataDto);
     }
 
-    /**
-     * @return string
-     */
     protected function generateFileName(): string
     {
         return Uuid::uuid4()->toString();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +17,7 @@ class DoctrineManager
     }
 
     /**
-     * @param object $object The instance to make managed and persistent.
+     * @param object $object the instance to make managed and persistent
      *
      * @return object
      */

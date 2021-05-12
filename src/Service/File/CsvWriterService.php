@@ -8,19 +8,12 @@ use App\Exception\File\UnsupportedDataType;
 use ParseCsv\Csv;
 
 /**
- * Class CsvWriterService
- * @package App\Service\File
+ * Class CsvWriterService.
  */
 class CsvWriterService extends AbstractWriterService
 {
-    /**
-     * @var string
-     */
     protected string $extension = 'csv';
 
-    /**
-     * @var Csv
-     */
     protected Csv $csvExtension;
 
     /**
@@ -34,9 +27,7 @@ class CsvWriterService extends AbstractWriterService
     }
 
     /**
-     * @param string $fileName
      * @param $data
-     * @param string|null $path
      *
      * @throws UnsupportedDataType
      */
@@ -57,7 +48,7 @@ class CsvWriterService extends AbstractWriterService
      */
     public function validate($data): void
     {
-        if ( ! is_array($data)) {
+        if (!is_array($data)) {
             throw new UnsupportedDataType();
         }
     }

@@ -11,16 +11,12 @@ use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class ApplicationAvailabilityFunctionalTest
- * @package App\Tests\Functional
+ * Class ApplicationAvailabilityFunctionalTest.
  */
 class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
     use FixturesTrait;
 
-    /**
-     * @var string 
-     */
     protected string $jwtToken;
 
     /**
@@ -52,11 +48,6 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
             \json_encode($params)
         );
 
-        if ($client->getResponse()->getStatusCode() != 201 && $client->getResponse()->isRedirect())
-        {
-            $client->followRedirect();
-        }
-
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -73,7 +64,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                 'params' => [
                     'username' => 'admin@example.com',
                     'password' => '12345qwerty',
-                ]
+                ],
             ],
             [
                 'url' => 'api/tasks',
@@ -81,7 +72,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                 'auth' => true,
                 'params' => [
                     'page' => 1,
-                ]
+                ],
             ],
             [
                 'url' => 'api/tasks/1',
@@ -97,7 +88,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                     'comment' => 'smoke test comment',
                     'time_spent' => 10,
                     'date' => '2011-04-08 00:00:00',
-                ]
+                ],
             ],
             [
                 'url' => 'api/tasks/report/generate',
@@ -107,7 +98,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                     'start_date' => '2100-01-01 00:00:00',
                     'end_date' => '2100-01-01 23:59:59',
                     'format' => 'pdf',
-                ]
+                ],
             ],
         ];
     }

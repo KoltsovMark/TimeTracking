@@ -9,22 +9,15 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
- * Class XlsxWriterService
- * @package App\Service\File
+ * Class XlsxWriterService.
  */
 class XlsxWriterService extends AbstractWriterService
 {
-    /**
-     * @var string
-     */
     protected string $extension = 'xlsx';
 
     /**
-     * @param string $fileName
      * @param $data
-     * @param string|null $path
      *
-     * @return string
      * @throws UnsupportedDataType
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
@@ -50,24 +43,16 @@ class XlsxWriterService extends AbstractWriterService
      */
     public function validate($data): void
     {
-        if ( ! is_array($data)) {
+        if (!is_array($data)) {
             throw new UnsupportedDataType();
         }
     }
 
-    /**
-     * @return Spreadsheet
-     */
     protected function getSpreadsheet(): Spreadsheet
     {
         return new Spreadsheet();
     }
 
-    /**
-     * @param Spreadsheet $spreadsheet
-     *
-     * @return Xlsx
-     */
     protected function getXlsx(Spreadsheet $spreadsheet): Xlsx
     {
         return new Xlsx($spreadsheet);

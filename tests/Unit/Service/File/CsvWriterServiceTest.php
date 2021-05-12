@@ -58,8 +58,8 @@ class CsvWriterServiceTest extends KernelTestCase
             [
                 Uuid::uuid4()->toString(),
                 [],
-                'somePath'
-            ]
+                'somePath',
+            ],
         ];
     }
 
@@ -110,10 +110,10 @@ class CsvWriterServiceTest extends KernelTestCase
         $this->assertEquals($expectedPath, $fullPath);
     }
 
-    public function dataProviderForGetFullPath():array
+    public function dataProviderForGetFullPath(): array
     {
         return [
-            [Uuid::uuid4()->toString(), 'path']
+            [Uuid::uuid4()->toString(), 'path'],
         ];
     }
 
@@ -123,7 +123,7 @@ class CsvWriterServiceTest extends KernelTestCase
 
         self::bootKernel();
 
-        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir') . '/public';
+        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').'/public';
 
         $this->csvExtensionMock = $this->createMock(Csv::class);
     }

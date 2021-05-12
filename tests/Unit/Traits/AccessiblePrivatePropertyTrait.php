@@ -7,16 +7,12 @@ namespace App\Tests\Unit\Traits;
 use ReflectionClass;
 
 /**
- * Trait PartialMockedTrait
- * @package App\Tests\Unit\Traits
+ * Trait PartialMockedTrait.
  */
 trait AccessiblePrivatePropertyTrait
 {
     /**
-     * @param object $object
-     * @param string $class
-     * @param string $name
-     * @param $value
+     * @param mixed $value
      *
      * @throws \ReflectionException
      */

@@ -8,8 +8,7 @@ use App\Service\File\CsvWriterService;
 use App\Traits\Task\File\SimpleTaskReportTableTrait;
 
 /**
- * Class TaskReportCsvService
- * @package App\Service\Task\File
+ * Class TaskReportCsvService.
  */
 class TaskReportCsvService extends AbstractTaskReportService
 {
@@ -19,19 +18,14 @@ class TaskReportCsvService extends AbstractTaskReportService
 
     /**
      * TaskReportCsvService constructor.
-     *
-     * @param CsvWriterService $csvWriterService
      */
     public function __construct(CsvWriterService $csvWriterService)
     {
         $this->setWriterService($csvWriterService);
     }
 
-    /**
-     * @return string
-     */
     protected function getPath(): string
     {
-        return self::REPORTS_PATH . self::REPORTS_SUB_PATH;
+        return self::REPORTS_PATH.self::REPORTS_SUB_PATH;
     }
 }

@@ -9,20 +9,14 @@ use App\Entity\Task;
 use App\Manager\DoctrineManager;
 
 /**
- * Class CreateTaskService
- * @package App\Service\Task
+ * Class CreateTaskService.
  */
 class CreateTaskService
 {
-    /**
-     * @var DoctrineManager
-     */
     private DoctrineManager $manager;
 
     /**
      * CreateTaskService constructor.
-     *
-     * @param DoctrineManager $manager
      */
     public function __construct(DoctrineManager $manager)
     {
@@ -30,9 +24,6 @@ class CreateTaskService
     }
 
     /**
-     * @param CreateTaskDto $createTaskDto
-     *
-     * @return Task
      * @throws \Exception
      */
     public function createTask(CreateTaskDto $createTaskDto): Task

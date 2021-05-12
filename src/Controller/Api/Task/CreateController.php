@@ -8,7 +8,6 @@ use App\Controller\Api\BaseController;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Form\Api\Task\CreateTaskType;
 use App\Service\Task\CreateTaskService;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +37,7 @@ class CreateController extends BaseController
     {
         $form = $this->createApiForm(CreateTaskType::class, $request);
 
-        if ( ! $form->isSubmitted() || ! $form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             return $form;
         }
 

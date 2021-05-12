@@ -21,11 +21,6 @@ trait SimpleTaskReportTableTrait
         ];
     }
 
-    /**
-     * @param TasksReportDataDto $tasksReportDataDto
-     *
-     * @return array
-     */
     protected function prepareData(TasksReportDataDto $tasksReportDataDto): array
     {
         $data[] = $this->getTitles();
@@ -49,7 +44,7 @@ trait SimpleTaskReportTableTrait
             null,
             null,
             $tasksReportDataDto->getTotalTasks(),
-            $tasksReportDataDto->getTotalTime()
+            $tasksReportDataDto->getTotalTime(),
         ];
 
         return $data;

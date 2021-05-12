@@ -7,7 +7,6 @@ namespace App\Controller\Api\Task;
 use App\Controller\Api\BaseController;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,7 +28,7 @@ class ShowController extends BaseController
     }
 
     /**
-     * @Route("/", name="_list", methods={"GET"})
+     * @Route("", name="_list", methods={"GET"})
      * @Security("is_granted('ROLE_TASKS_VIEWER')")
      *
      * @Rest\View(statusCode=200)

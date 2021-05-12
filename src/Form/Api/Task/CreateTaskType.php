@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Api\Task;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,22 +20,22 @@ class CreateTaskType extends AbstractType
         $builder->add('title', TextType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['max' => 255])
-            ]
+                new Length(['max' => 255]),
+            ],
         ])->add('comment', TextType::class, [
             'constraints' => [
-                new Length(['max' => 10000])
-            ]
+                new Length(['max' => 10000]),
+            ],
         ])->add('time_spent', IntegerType::class, [
             'constraints' => [
                 new NotBlank(),
                 new Positive(),
-            ]
+            ],
         ])->add('date', DateTimeType::class, [
             'widget' => 'single_text',
             'constraints' => [
                 new NotBlank(),
-            ]
+            ],
         ]);
     }
 }

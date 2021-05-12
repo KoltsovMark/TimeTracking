@@ -9,5 +9,6 @@ use App\Model\Configuration\File\PdfWriterConfiguration;
 interface ConfigurablePdfWriterInterface
 {
     public function getConfiguration(): PdfWriterConfiguration;
+
     public function setConfiguration(PdfWriterConfiguration $pdfWriterConfiguration): void;
 }

@@ -7,33 +7,23 @@ namespace App\Contract\File;
 interface FileWriterInterface
 {
     /**
-     * Return supported extension
-     *
-     * @return string
+     * Return supported extension.
      */
     public function getExtension(): string;
 
     /**
-     * Write data to file
+     * Write data to file.
      *
-     * @param string $fileName
      * @param $data
-     * @param string|null $path
      */
     public function write(string $fileName, $data, string $path = null): string;
 
     /**
-     * Validate input data before storing
+     * Validate input data before storing.
      *
      * @param $data
      */
     public function validate($data): void;
 
-    /**
-     * @param string $fileName
-     * @param string|null $path
-     *
-     * @return string
-     */
     public function getFullPath(string $fileName, string $path = null): string;
 }

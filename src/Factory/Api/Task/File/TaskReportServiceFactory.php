@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Factory\Api\Task\File;
 
-use App\Contract\File\FileWriterInterface;
 use App\Exception\Factory\UnsupportedFactoryObject;
-use App\Service\File\PdfWriterService;
 use App\Service\Task\File\TaskReportCsvService;
 use App\Service\Task\File\TaskReportPdfService;
 use App\Service\Task\File\TaskReportXlsxService;

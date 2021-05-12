@@ -7,24 +7,15 @@ namespace App\Factory\Api\Task\Dto;
 use App\Dto\Api\Task\GenerateTasksReportDto;
 
 /**
- * Class GenerateTasksReportDtoFactory
- * @package App\Factory\Api\Task\Dto
+ * Class GenerateTasksReportDtoFactory.
  */
 class GenerateTasksReportDtoFactory
 {
-    /**
-     * @return GenerateTasksReportDto
-     */
     public function createEmpty(): GenerateTasksReportDto
     {
         return new GenerateTasksReportDto();
     }
 
-    /**
-     * @param array $params
-     *
-     * @return GenerateTasksReportDto
-     */
     public function createFromArray(array $params): GenerateTasksReportDto
     {
         return $this->createEmpty()

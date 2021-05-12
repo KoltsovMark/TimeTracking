@@ -9,52 +9,33 @@ use App\Dto\Api\Task\TasksReportDataDto;
 use App\Service\File\AbstractWriterService;
 
 /**
- * Class AbstractTaskReportService
- * @package App\Service\Task\File
+ * Class AbstractTaskReportService.
  */
 abstract class AbstractTaskReportService implements TaskFileReportInterface
 {
-    /**
-     * @var AbstractWriterService
-     */
     protected AbstractWriterService $writerService;
 
     public const REPORTS_PATH = 'reports/tasks';
 
     /**
-     * @param TasksReportDataDto $tasksReportDataDto
-     *
      * @return mixed
      */
     abstract protected function prepareData(TasksReportDataDto $tasksReportDataDto);
 
-    /**
-     * @return string
-     */
     abstract protected function getPath(): string;
 
-    /**
-     * @return AbstractWriterService
-     */
     public function getWriterService(): AbstractWriterService
     {
         return $this->writerService;
     }
 
-    /**
-     * @param AbstractWriterService $writerService
-     *
-     * @return AbstractTaskReportService
-     */
     public function setWriterService(AbstractWriterService $writerService): AbstractTaskReportService
     {
         $this->writerService = $writerService;
+
         return $this;
     }
 
-    /**
-     * @param TasksReportDataDto $tasksReportDataDto
-     */
     public function generate(TasksReportDataDto $tasksReportDataDto): string
     {
         $data = $this->prepareData($tasksReportDataDto);

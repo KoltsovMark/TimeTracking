@@ -12,25 +12,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PdfWriterService extends AbstractWriterService implements ConfigurablePdfWriterInterface
 {
-    /**
-     * @var string
-     */
     protected string $extension = 'pdf';
 
-    /**
-     * @var Filesystem
-     */
     protected Filesystem $filesystem;
-    /**
-     * @var PdfWriterConfiguration
-     */
+
     protected PdfWriterConfiguration $configuration;
 
     /**
      * PdfWriterService constructor.
-     *
-     * @param Filesystem $filesystem
-     * @param PdfWriterConfiguration $configuration
      */
     public function __construct(string $projectDir, Filesystem $filesystem, PdfWriterConfiguration $configuration)
     {
@@ -41,26 +30,18 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
         $this->setConfiguration($configuration);
     }
 
-    /**
-     * @return PdfWriterConfiguration
-     */
     public function getConfiguration(): PdfWriterConfiguration
     {
         return $this->configuration;
     }
 
-    /**
-     * @param PdfWriterConfiguration $configuration
-     */
     public function setConfiguration(PdfWriterConfiguration $configuration): void
     {
         $this->configuration = $configuration;
     }
 
     /**
-     * @param string $fileName
      * @param $data
-     * @param string|null $path
      *
      * @throws UnsupportedDataType
      */
@@ -85,7 +66,7 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
      */
     public function validate($data): void
     {
-        if ( ! is_string($data)) {
+        if (!is_string($data)) {
             throw new UnsupportedDataType();
         }
     }

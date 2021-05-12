@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Api\Task;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,11 +23,11 @@ class GenerateTasksReportType extends AbstractType
                 'choices' => [
                     'csv' => 'csv',
                     'excel' => 'excel',
-                    'pdf' => 'pdf'
+                    'pdf' => 'pdf',
                 ],
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ]);
     }
 }

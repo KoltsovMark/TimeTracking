@@ -9,26 +9,16 @@ use App\Service\File\PdfWriterService;
 use Twig\Environment;
 
 /**
- * Class TaskReportPdfService
- * @package App\Service\Task\File
+ * Class TaskReportPdfService.
  */
 class TaskReportPdfService extends AbstractTaskReportService
 {
-    /**
-     *
-     */
     public const REPORTS_SUB_PATH = '/pdf';
 
-    /**
-     * @var Environment
-     */
     private Environment $twig;
 
     /**
      * TaskReportPdfService constructor.
-     *
-     * @param PdfWriterService $pdfWriterService
-     * @param Environment $twig
      */
     public function __construct(PdfWriterService $pdfWriterService, Environment $twig)
     {
@@ -38,9 +28,6 @@ class TaskReportPdfService extends AbstractTaskReportService
     }
 
     /**
-     * @param TasksReportDataDto $tasksReportDataDto
-     *
-     * @return string
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -52,11 +39,8 @@ class TaskReportPdfService extends AbstractTaskReportService
         ]);
     }
 
-    /**
-     * @return string
-     */
     protected function getPath(): string
     {
-        return self::REPORTS_PATH . self::REPORTS_SUB_PATH;
+        return self::REPORTS_PATH.self::REPORTS_SUB_PATH;
     }
 }

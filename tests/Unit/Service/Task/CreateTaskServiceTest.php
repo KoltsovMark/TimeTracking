@@ -37,7 +37,7 @@ class CreateTaskServiceTest extends TestCase
             'comment' => $comment,
             'time_spent' => $timeSpent,
             'date' => $date,
-            'user' => $user
+            'user' => $user,
         ]);
 
         $expectedTask = (new Task())->setTitle($createTaskDto->getTitle())
@@ -68,7 +68,7 @@ class CreateTaskServiceTest extends TestCase
                 'time_spent' => 123,
                 'date' => new DateTime(),
                 'user' => new User(),
-            ]
+            ],
         ];
     }
 

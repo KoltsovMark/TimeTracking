@@ -19,41 +19,27 @@ class PdfWriterConfiguration
         ;
     }
 
-    /**
-     * @return string
-     */
     public function getPaper(): string
     {
         return $this->paper;
     }
 
-    /**
-     * @param string $paper
-     *
-     * @return PdfWriterConfiguration
-     */
     public function setPaper(string $paper): PdfWriterConfiguration
     {
         $this->paper = $paper;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getOrientation(): string
     {
         return $this->orientation;
     }
 
-    /**
-     * @param string $orientation
-     *
-     * @return PdfWriterConfiguration
-     */
     public function setOrientation(string $orientation): PdfWriterConfiguration
     {
         $this->orientation = $orientation;
+
         return $this;
     }
 }

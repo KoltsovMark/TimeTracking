@@ -11,11 +11,11 @@ use App\Service\Task\File\AbstractTaskReportService;
 interface TaskFileReportInterface
 {
     /**
-     * Generate and store report
-     *
-     * @param TasksReportDataDto $tasksReportDataDto
+     * Generate and store report.
      */
     public function generate(TasksReportDataDto $tasksReportDataDto): string;
+
     public function getWriterService(): AbstractWriterService;
+
     public function setWriterService(AbstractWriterService $writerService): AbstractTaskReportService;
 }

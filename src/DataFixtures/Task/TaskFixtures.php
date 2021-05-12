@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures\Task;
 
 use App\Entity\Task;
@@ -27,7 +29,7 @@ class TaskFixtures extends Fixture implements FixtureGroupInterface, OrderedFixt
         $users = $this->userRepository->findBy(['email' => ['admin@example.com', 'user@example.com']]);
 
         foreach ($users as $user) {
-            for ($i = 0; $i < $this->faker->numberBetween(5, 20); $i++) {
+            for ($i = 0; $i < $this->faker->numberBetween(5, 20); ++$i) {
                 $task = (new Task())
                     ->setTitle($this->faker->text(255))
                     ->setComment($this->faker->paragraph)

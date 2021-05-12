@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Task;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use DateTime;
 
 /**
  * @method Task|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,10 +37,6 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     * @param DateTime|null $startDate
-     * @param DateTime|null $endDate
-     *
      * @return Task[]
      */
     public function findByUserAndDateRange(User $user, DateTime $startDate = null, DateTime $endDate = null): array
@@ -52,11 +50,6 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     * @param DateTime|null $startDate
-     * @param DateTime|null $endDate
-     *
-     * @return array
      * @throws Query\QueryException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -64,8 +57,8 @@ class TaskRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->select([
-                'COUNT(t.id) AS ' . self::TOTAL_ALIAS,
-                'SUM(t.timeSpent) AS ' . self::TOTAL_TIME_SPENT_ALIAS,
+                'COUNT(t.id) AS '.self::TOTAL_ALIAS,
+                'SUM(t.timeSpent) AS '.self::TOTAL_TIME_SPENT_ALIAS,
             ])
             ->addCriteria($this->createUserCriteria($user))
             ->addCriteria($this->createBetweenDateCriteria($startDate, $endDate))
