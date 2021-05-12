@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller;
 
-use App\DataFixtures\User\UserFixtures;
+use App\DataFixtures\Test\User\UserFixtures;
 use App\Entity\User;
 use Faker\Factory;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AuthenticableControllerTest extends WebTestCase
+/*
+ * Make class abstract due to No tests found Warning
+ */
+abstract class AuthenticableControllerTest extends WebTestCase
 {
     use FixturesTrait;
 

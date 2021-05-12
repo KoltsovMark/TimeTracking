@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\DataFixtures\Task\TaskFixtures;
-use App\DataFixtures\User\UserFixtures;
+use App\DataFixtures\Test\Task\TaskFixtures;
+use App\DataFixtures\Test\User\UserFixtures;
 use App\Entity\User;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
