@@ -9,7 +9,9 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
- * @ORM\Table(name="tasks")
+ * @ORM\Table(name="tasks", indexes={
+ *  @ORM\Index(columns={"user_id", "date"}),
+ * })
  * @JMS\ExclusionPolicy("all")
  */
 class Task
@@ -39,7 +41,7 @@ class Task
     private $comment;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      * @JMS\Expose()
      */
     private $timeSpent;
