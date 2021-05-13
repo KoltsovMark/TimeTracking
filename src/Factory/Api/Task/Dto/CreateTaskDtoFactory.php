@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Factory\Api\Task\Dto;
 
+use App\Dto\Api\Form\Task\CreateTaskTypeDto;
 use App\Dto\Api\Task\CreateTaskDto;
+use App\Entity\User;
 
 class CreateTaskDtoFactory
 {
@@ -13,14 +15,14 @@ class CreateTaskDtoFactory
         return new CreateTaskDto();
     }
 
-    public function createFromArray(array $params): CreateTaskDto
+    public function createFromCreateTaskTypeDto(CreateTaskTypeDto $createTaskTypeDto, User $user): CreateTaskDto
     {
         return $this->createEmpty()
-            ->setTitle($params['title'])
-            ->setComment($params['comment'])
-            ->setDate($params['date'])
-            ->setTimeSpent($params['time_spent'])
-            ->setUser($params['user'])
-            ;
+            ->setTitle($createTaskTypeDto->getTitle())
+            ->setComment($createTaskTypeDto->getComment())
+            ->setDate($createTaskTypeDto->getDate())
+            ->setTimeSpent($createTaskTypeDto->getTimeSpent())
+            ->setUser($user)
+        ;
     }
 }

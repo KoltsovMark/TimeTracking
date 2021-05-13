@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
+use App\Dto\Api\Form\Task\CreateTaskTypeDto;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Form\Api\Task\CreateTaskType;
 use App\Service\Task\CreateTaskService;
@@ -38,8 +39,14 @@ class CreateController extends BaseController
             return $form;
         }
 
-        $createTaskDto = $this->createTaskDtoFactory->createFromArray(
-            array_merge($form->getData(), ['user' => $this->getUser()])
+        /**
+         * @var CreateTaskTypeDto $createTaskTypeDto
+         */
+        $createTaskTypeDto = $form->getData();
+
+        $createTaskDto = $this->createTaskDtoFactory->createFromCreateTaskTypeDto(
+            $createTaskTypeDto,
+            $this->getUser()
         );
 
         $task = $this->createTaskService->createTask($createTaskDto);
