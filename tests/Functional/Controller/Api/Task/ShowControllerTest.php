@@ -112,7 +112,7 @@ class ShowControllerTest extends AuthenticableControllerTest
                 'title' => 'An error occurred',
                 'message' => 'App\\Entity\\Task object not found by the @ParamConverter annotation.',
             ],
-            'string id' => [
+            'inject SQL in id' => [
                 'id' => 'UNION SELECT email, password FROM users',
                 'code' => 404,
                 'title' => 'An error occurred',
