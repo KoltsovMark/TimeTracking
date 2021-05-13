@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service\File;
 
+use App\Dto\Api\File\Configuration\PdfWriterConfiguration;
 use App\Exception\File\UnsupportedDataType;
-use App\Model\Configuration\File\PdfWriterConfiguration;
 use App\Service\File\PdfWriterService;
 use App\Tests\Unit\Traits\AccessiblePrivatePropertyTrait;
 use Dompdf\Dompdf;

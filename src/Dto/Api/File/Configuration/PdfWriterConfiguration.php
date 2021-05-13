@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Configuration\File;
+namespace App\Dto\Api\File\Configuration;
 
 class PdfWriterConfiguration
 {

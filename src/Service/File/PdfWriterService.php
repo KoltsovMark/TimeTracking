@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Service\File;
 
 use App\Contract\Task\File\ConfigurablePdfWriterInterface;
+use App\Dto\Api\File\Configuration\PdfWriterConfiguration;
 use App\Exception\File\UnsupportedDataType;
-use App\Model\Configuration\File\PdfWriterConfiguration;
 use Dompdf\Dompdf;
 use Symfony\Component\Filesystem\Filesystem;
 

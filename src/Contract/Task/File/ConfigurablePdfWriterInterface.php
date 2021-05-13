@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contract\Task\File;
 
-use App\Model\Configuration\File\PdfWriterConfiguration;
+use App\Dto\Api\File\Configuration\PdfWriterConfiguration;
 
 interface ConfigurablePdfWriterInterface
 {
