@@ -27,7 +27,7 @@ class CsvWriterService extends AbstractWriterService
     }
 
     /**
-     * @param $data
+     * @param array $data
      *
      * @throws UnsupportedDataType
      */

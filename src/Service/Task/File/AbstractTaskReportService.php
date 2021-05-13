@@ -18,10 +18,13 @@ abstract class AbstractTaskReportService implements TaskFileReportInterface
     public const REPORTS_PATH = 'reports/tasks';
 
     /**
-     * @return mixed
+     * Prepare tasks report data to store in writer format.
      */
-    abstract protected function prepareData(TasksReportDataDto $tasksReportDataDto);
+    abstract protected function prepareTaskReportData(TasksReportDataDto $tasksReportDataDto);
 
+    /**
+     * Return a path to task report storage folder
+     */
     abstract protected function getPath(): string;
 
     public function getWriterService(): AbstractWriterService
@@ -38,7 +41,7 @@ abstract class AbstractTaskReportService implements TaskFileReportInterface
 
     public function generate(TasksReportDataDto $tasksReportDataDto): string
     {
-        $data = $this->prepareData($tasksReportDataDto);
+        $data = $this->prepareTaskReportData($tasksReportDataDto);
         $fileName = $this->getWriterService()->write($tasksReportDataDto->getReportFileName(), $data, $this->getPath());
 
         return $fileName;

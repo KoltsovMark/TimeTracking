@@ -47,10 +47,10 @@ class TaskReportPdfServiceTest extends KernelTestCase
         $expectedPath = 'reports/tasks/pdf';
         $expectedFullPath = "{$expectedPath}/{$fileName}.pdf";
 
-        $partialMock = $this->getTaskReportPdfServicePartialMock(['prepareData', 'getWriterService', 'getPath']);
+        $partialMock = $this->getTaskReportPdfServicePartialMock(['prepareTaskReportData', 'getWriterService', 'getPath']);
 
         $partialMock->expects($this->once())
-            ->method('prepareData')
+            ->method('prepareTaskReportData')
             ->with(...[$tasksReportDataDto])
             ->willReturn($expectedPreparedData)
         ;

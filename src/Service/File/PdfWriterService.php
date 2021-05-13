@@ -41,7 +41,7 @@ class PdfWriterService extends AbstractWriterService implements ConfigurablePdfW
     }
 
     /**
-     * @param $data
+     * @param string $data
      *
      * @throws UnsupportedDataType
      */

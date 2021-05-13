@@ -16,7 +16,7 @@ class XlsxWriterService extends AbstractWriterService
     protected string $extension = 'xlsx';
 
     /**
-     * @param $data
+     * @param array $data
      *
      * @throws UnsupportedDataType
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception

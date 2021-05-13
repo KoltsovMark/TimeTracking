@@ -8,6 +8,9 @@ use App\Dto\Api\Task\TasksReportDataDto;
 
 trait SimpleTaskReportTableTrait
 {
+    /**
+     * A list of titles for table formats, used in prepareTaskReportData.
+     */
     protected function getTitles(): array
     {
         return [
@@ -21,7 +24,10 @@ trait SimpleTaskReportTableTrait
         ];
     }
 
-    protected function prepareData(TasksReportDataDto $tasksReportDataDto): array
+    /**
+     * Prepare tasks report data to store in writer format.
+     */
+    protected function prepareTaskReportData(TasksReportDataDto $tasksReportDataDto): array
     {
         $data[] = $this->getTitles();
 

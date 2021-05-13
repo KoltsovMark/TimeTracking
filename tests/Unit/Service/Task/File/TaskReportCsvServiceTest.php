@@ -47,10 +47,10 @@ class TaskReportCsvServiceTest extends KernelTestCase
         $expectedPath = 'reports/tasks/csv';
         $expectedFullPath = "{$expectedPath}/{$fileName}.csv";
 
-        $partialMock = $this->getTaskReportCsvServicePartialMock(['prepareData', 'getWriterService', 'getPath']);
+        $partialMock = $this->getTaskReportCsvServicePartialMock(['prepareTaskReportData', 'getWriterService', 'getPath']);
 
         $partialMock->expects($this->once())
-            ->method('prepareData')
+            ->method('prepareTaskReportData')
             ->with(...[$tasksReportDataDto])
             ->willReturn($expectedPreparedData)
         ;

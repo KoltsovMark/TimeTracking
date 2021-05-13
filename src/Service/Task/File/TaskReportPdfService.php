@@ -32,7 +32,7 @@ class TaskReportPdfService extends AbstractTaskReportService
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    protected function prepareData(TasksReportDataDto $tasksReportDataDto): string
+    protected function prepareTaskReportData(TasksReportDataDto $tasksReportDataDto): string
     {
         return $this->twig->render('task/report/task_report_pdf.html.twig', [
             'data' => $tasksReportDataDto,

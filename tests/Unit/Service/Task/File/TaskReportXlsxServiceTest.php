@@ -47,10 +47,10 @@ class TaskReportXlsxServiceTest extends KernelTestCase
         $expectedPath = 'reports/tasks/xlsx';
         $expectedFullPath = "{$expectedPath}/{$fileName}.xlsx";
 
-        $partialMock = $this->getTaskReportXlsxServicePartialMock(['prepareData', 'getWriterService', 'getPath']);
+        $partialMock = $this->getTaskReportXlsxServicePartialMock(['prepareTaskReportData', 'getWriterService', 'getPath']);
 
         $partialMock->expects($this->once())
-            ->method('prepareData')
+            ->method('prepareTaskReportData')
             ->with(...[$tasksReportDataDto])
             ->willReturn($expectedPreparedData)
         ;
