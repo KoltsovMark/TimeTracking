@@ -33,7 +33,7 @@ class CreateReportController extends BaseController
      * @Route("/generate", name="_generate", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_REPORT_CREATOR')")
      *
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=201)
      */
     public function generateReport(Request $request)
     {
