@@ -80,7 +80,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                 'auth' => true,
             ],
             [
-                'url' => 'api/tasks/create',
+                'url' => 'api/tasks',
                 'method' => 'POST',
                 'auth' => true,
                 'params' => [
@@ -91,7 +91,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                 ],
             ],
             [
-                'url' => 'api/tasks/report/generate',
+                'url' => 'api/tasks/report',
                 'method' => 'POST',
                 'auth' => true,
                 'params' => [

@@ -13,9 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("tasks/report", name="tasks_report")
- */
 class CreateReportController extends BaseController
 {
     private GenerateTasksReportDtoFactory $generateTasksReportDtoFactory;
@@ -30,12 +27,12 @@ class CreateReportController extends BaseController
     }
 
     /**
-     * @Route("/generate", name="_generate", methods={"POST"})
+     * @Route("tasks/report", name="tasks_generate", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_REPORT_CREATOR')")
      *
      * @Rest\View(statusCode=201)
      */
-    public function generateReport(Request $request)
+    public function new(Request $request)
     {
         /**
          * @todo Add queue for background generation

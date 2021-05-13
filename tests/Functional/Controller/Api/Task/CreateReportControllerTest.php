@@ -27,7 +27,7 @@ class CreateReportControllerTest extends AuthenticableControllerTest
 
         $client->request(
             'POST',
-            'api/tasks/report/generate',
+            'api/tasks/report',
             [],
             [],
             [],
@@ -94,7 +94,7 @@ class CreateReportControllerTest extends AuthenticableControllerTest
 
         $client->request(
             'POST',
-            'api/tasks/report/generate',
+            'api/tasks/report',
             [],
             [],
             [],

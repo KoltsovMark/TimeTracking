@@ -13,9 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("tasks", name="tasks")
- */
 class CreateController extends BaseController
 {
     private CreateTaskDtoFactory $createTaskDtoFactory;
@@ -28,12 +25,12 @@ class CreateController extends BaseController
     }
 
     /**
-     * @Route("/create", name="_create", methods={"POST"})
+     * @Route("tasks", name="tasks_create", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_CREATOR')")
      *
      * @Rest\View(statusCode=201)
      */
-    public function createTask(Request $request)
+    public function new(Request $request)
     {
         $form = $this->createApiForm(CreateTaskType::class, $request);
 
@@ -47,6 +44,7 @@ class CreateController extends BaseController
 
         $task = $this->createTaskService->createTask($createTaskDto);
 
+        // @todo add Resource instead of entity
         return $task;
     }
 }

@@ -28,7 +28,7 @@ class CreateControllerTest extends AuthenticableControllerTest
 
         $client->request(
             'POST',
-            'api/tasks/create',
+            'api/tasks',
             [],
             [],
             [],
@@ -101,7 +101,7 @@ class CreateControllerTest extends AuthenticableControllerTest
 
         $client->request(
             'POST',
-            'api/tasks/create',
+            'api/tasks',
             [],
             [],
             [],
