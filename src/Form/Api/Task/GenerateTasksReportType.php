@@ -17,8 +17,10 @@ class GenerateTasksReportType extends AbstractType
         $builder
             ->add('start_date', DateTimeType::class, [
                 'widget' => 'single_text',
+                'required' => false,
             ])->add('end_date', DateTimeType::class, [
                 'widget' => 'single_text',
+                'required' => false,
             ])->add('format', ChoiceType::class, [
                 'choices' => [
                     'csv' => 'csv',

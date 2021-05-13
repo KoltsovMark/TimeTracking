@@ -9,6 +9,8 @@ use App\Factory\Api\Task\Dto\GenerateTasksReportDtoFactory;
 use App\Form\Api\Task\GenerateTasksReportType;
 use App\Service\Task\ReportTasksService;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation as SWG;
+use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,8 +31,63 @@ class CreateReportController extends BaseController
     /**
      * @Route("tasks/report", name="tasks_generate", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_REPORT_CREATOR')")
-     *
      * @Rest\View(statusCode=201)
+     *
+     * @SWG\Security(name="Bearer")
+     * @OA\Post(
+     *     tags={"Tasks"},
+     *     summary="Create a new task report",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref=@SWG\Model(type=GenerateTasksReportType::class))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Report created",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                @OA\Property(property="content", type="string", example="VGl0bGUsQ29tbWVudCxUaW1lLERhdGUsRW1haWwsVG90YWwgVGFza3MsVG90YWwgVGltZSBTcGVudA0sLCwsLDAsMA0"),
+     *                @OA\Property(property="extension", type="string", example="csv")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unathorized request",
+     *         @OA\Schema(
+     *             @OA\Property(property="code", type="integer", example=401),
+     *             @OA\Property(property="message", type="string", example="Expired JWT Token"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="code", type="integer", example=400),
+     *                 @OA\Property(property="message", type="string", example="Validation Failed"),
+     *                 @OA\Property(
+     *                     property="errors",
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="children",
+     *                         type="object",
+     *                         @OA\Property(
+     *                             property="format",
+     *                             type="array",
+     *                             @OA\Items(example="This value is required")
+     *                         ),
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
      */
     public function new(Request $request)
     {

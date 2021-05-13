@@ -13,6 +13,9 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation as SWG;
+use OpenApi\Annotations as OA;
+use App\Entity\Task;
 
 class ListController extends BaseController
 {
@@ -28,8 +31,72 @@ class ListController extends BaseController
     /**
      * @Route("tasks", name="tasks_list", methods={"GET"})
      * @Security("is_granted('ROLE_TASKS_VIEWER')")
-     *
      * @Rest\View(statusCode=200)
+     *
+     * @SWG\Security(name="Bearer")
+     * @OA\Get(
+     *     tags={"Tasks"},
+     *     summary="Return a list of authorized user's tasks",
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref=@SWG\Model(type=PaginatedPageType::class))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="A list of user tasks",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="page", type="int", example="1"),
+     *                 @OA\Property(property="per_page", type="int", example="10"),
+     *                 @OA\Property(property="total_items", type="int", example="15"),
+     *                 @OA\Property(
+     *                      type="array",
+     *                      property="items",
+     *                      @OA\Items(ref=@SWG\Model(type=Task::class))
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unathorized request",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="code", type="integer", example=401),
+     *                 @OA\Property(property="message", type="string", example="Expired JWT Token"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="code", type="integer", example=400),
+     *                 @OA\Property(property="message", type="string", example="Validation Failed"),
+     *                 @OA\Property(
+     *                     property="errors",
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="children",
+     *                         type="object",
+     *                         @OA\Property(
+     *                             property="format",
+     *                             type="array",
+     *                             @OA\Items(example="This value is required")
+     *                         ),
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
      */
     public function index(Request $request)
     {

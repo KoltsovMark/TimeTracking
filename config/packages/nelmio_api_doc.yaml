@@ -1,9 +1,61 @@
 nelmio_api_doc:
     documentation:
         info:
-            title: My App
-            description: This is an awesome app!
+            title: Time Tracking
+            description: This is time tracking app!
             version: 1.0.0
+        paths:
+            /api/login:
+                post:
+                    tags:
+                        - Authentification
+                    summary: Login user
+                    description: Login user to the system
+                    security: []
+                    requestBody:
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    properties:
+                                        username:
+                                            type: string
+                                            example: admin@example.com
+                                        password:
+                                            type: string
+                                            example: 12345qwerty
+                    responses:
+                        '200':
+                            description: Success login with JWT token
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            token:
+                                                type: string
+                                                readOnly: true
+                        '401':
+                            description: Invalid credentials
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            code:
+                                                type: integer
+                                                example: 401
+                                            message:
+                                                type: string
+                                                example: "Invalid credentials."
+        components:
+            securitySchemes:
+                BearerAuth:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            -   BearerAuth: []
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

@@ -29,6 +29,7 @@ class CreateTaskType extends AbstractType
             'constraints' => [
                 new Length(['max' => 10000]),
             ],
+            'required' => false,
         ])->add('time_spent', IntegerType::class, [
             'constraints' => [
                 new NotBlank(),

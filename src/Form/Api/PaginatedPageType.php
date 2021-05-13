@@ -20,6 +20,7 @@ class PaginatedPageType extends AbstractType
             'constraints' => [
                 new Positive(),
             ],
+            'required' => false,
         ])->add('limit', ChoiceType::class, [
             'choices' => [
                 10,
@@ -28,6 +29,7 @@ class PaginatedPageType extends AbstractType
                 25,
                 50,
             ],
+            'required' => false,
         ])
         ;
     }
