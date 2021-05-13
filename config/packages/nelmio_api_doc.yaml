@@ -50,12 +50,12 @@ nelmio_api_doc:
                                                 example: "Invalid credentials."
         components:
             securitySchemes:
-                BearerAuth:
+                Bearer:
                     type: http
                     scheme: bearer
                     bearerFormat: JWT
         security:
-            -   BearerAuth: []
+            -   Bearer: []
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
