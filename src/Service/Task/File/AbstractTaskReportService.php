@@ -23,7 +23,7 @@ abstract class AbstractTaskReportService implements TaskFileReportInterface
     abstract protected function prepareTaskReportData(TasksReportDataDto $tasksReportDataDto);
 
     /**
-     * Return a path to task report storage folder
+     * Return a path to task report storage folder.
      */
     abstract protected function getPath(): string;
 

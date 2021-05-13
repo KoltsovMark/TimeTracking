@@ -16,7 +16,7 @@ interface TaskFileReportInterface
     public function generate(TasksReportDataDto $tasksReportDataDto): string;
 
     /**
-     * Return writer service for specific report format, e.g. csf
+     * Return writer service for specific report format, e.g. csf.
      */
     public function getWriterService(): AbstractWriterService;
 

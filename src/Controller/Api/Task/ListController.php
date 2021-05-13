@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
+use App\Dto\Api\Form\PaginatedPageTypeDto;
+use App\Form\Api\PaginatedPageType;
 use App\Repository\TaskRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,11 +33,25 @@ class ListController extends BaseController
      */
     public function index(Request $request)
     {
-        //@todo add parameters validation, e.g. limit available types
+        // @todo extend by own class in case of new parameters
+        $form = $this->createGetForm(PaginatedPageType::class, $request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $form;
+        }
+
+        /**
+         * @var PaginatedPageTypeDto $paginatedPageDto
+         */
+        $paginatedPageDto = $form->getData();
+
+        /*
+         * @todo move paginator to a separates service
+         */
         return $this->paginator->paginate(
             $this->taskRepository->findQueryByUser($this->getUser()),
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 10)
+            $paginatedPageDto->getPage() ?? 1,
+            $paginatedPageDto->getLimit() ?? 10,
         );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service\Task;
 
+use App\Dto\Api\Form\Task\CreateTaskTypeDto;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
@@ -32,13 +33,14 @@ class CreateTaskServiceTest extends TestCase
         DateTime $date,
         User $user
     ) {
-        $createTaskDto = $this->createTaskDtoFactory->createFromArray([
-            'title' => $title,
-            'comment' => $comment,
-            'time_spent' => $timeSpent,
-            'date' => $date,
-            'user' => $user,
-        ]);
+        $createTaskTypeDto = (new CreateTaskTypeDto())
+            ->setTitle($title)
+            ->setComment($comment)
+            ->setTimeSpent($timeSpent)
+            ->setDate($date)
+        ;
+
+        $createTaskDto = $this->createTaskDtoFactory->createFromCreateTaskTypeDto($createTaskTypeDto, $user);
 
         $expectedTask = (new Task())->setTitle($createTaskDto->getTitle())
             ->setComment($createTaskDto->getComment())

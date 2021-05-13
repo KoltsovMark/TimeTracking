@@ -60,12 +60,12 @@ class ListControllerTest extends AuthenticableControllerTest
                 'items on page' => 15,
                 'total items' => 15,
             ],
-            'list 2-nd page with 5 items per page' => [
+            'list 2-nd page with 50 items per page' => [
                 'params' => [
                     'page' => 2,
-                    'limit' => 5,
+                    'limit' => 50,
                 ],
-                'items on page' => 5,
+                'items on page' => 0,
                 'total items' => 15,
             ],
         ];
@@ -74,9 +74,9 @@ class ListControllerTest extends AuthenticableControllerTest
     /**
      * @covers \App\Controller\Api\Task\ShowController::tasksList
      *
-     * @dataProvider dataProviderForTasksListWithSqlInjection
+     * @dataProvider dataProviderForTasksListWithFailedValidation
      */
-    public function testTasksListWithSqlInjection(array $params, string $expectedMessage)
+    public function testTasksListWithFailedValidation(array $params, string $expectedJsonResponse)
     {
         $headers = [
             'ACCEPT' => 'application/json',
@@ -94,33 +94,41 @@ class ListControllerTest extends AuthenticableControllerTest
         );
 
         // Check response status and code
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
 
         // Check response status
         $responseContent = $this->decodeResponse($client->getResponse()->getContent());
 
+        // Expected response from API
+        $expectedResponse = \json_decode($expectedJsonResponse, true);
+
         // Compare retrieved data
-        $this->assertEquals('An error occurred', $responseContent['title']);
-        $this->assertEquals($expectedMessage, $responseContent['detail']);
-        $this->assertEquals('LogicException', $responseContent['class']);
+        $this->assertEquals($expectedResponse, $responseContent);
     }
 
-    public function dataProviderForTasksListWithSqlInjection(): array
+    public function dataProviderForTasksListWithFailedValidation(): array
     {
         return [
+            'limit not in allowed limits' => [
+                [
+                    'page' => 1,
+                    'limit' => 5,
+                ],
+                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": {}, "limit": { "errors": [ "This value is not valid." ] } } } }',
+            ],
             'inject in page' => [
                 [
                     'page' => 'UNION SELECT email, password FROM users',
                     'limit' => 10,
                 ],
-                'Invalid item per page number. Limit: 10 and Page: 0, must be positive non-zero integers',
+                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": { "errors": [ "This value is not valid." ] }, "limit": {} } } }',
             ],
             'inject in limit' => [
                 [
                     'limit' => 'UNION SELECT email, password FROM users',
                     'page' => 1,
                 ],
-                'Invalid item per page number. Limit: 0 and Page: 1, must be positive non-zero integers',
+                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": {}, "limit": { "errors": [ "This value is not valid." ] } } } }',
             ],
         ];
     }
