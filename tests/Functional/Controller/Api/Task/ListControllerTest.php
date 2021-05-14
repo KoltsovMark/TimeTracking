@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Api\Task;
 
 use App\DataFixtures\Test\Task\TaskFixtures;
+use App\Tests\Functional\Contract\ValidationAssertsInterface;
 use App\Tests\Functional\Controller\AuthenticableControllerTest;
+use App\Tests\Functional\Traits\ValidationAssertsTrait;
 
-class ListControllerTest extends AuthenticableControllerTest
+class ListControllerTest extends AuthenticableControllerTest implements ValidationAssertsInterface
 {
+    use ValidationAssertsTrait;
+
     /**
      * @covers \App\Controller\Api\Task\ShowController::tasksList
      *
@@ -76,7 +80,7 @@ class ListControllerTest extends AuthenticableControllerTest
      *
      * @dataProvider dataProviderForTasksListWithFailedValidation
      */
-    public function testTasksListWithFailedValidation(array $params, string $expectedJsonResponse)
+    public function testTasksListWithFailedValidation(array $params, array $expectedValidationErrors)
     {
         $headers = [
             'ACCEPT' => 'application/json',
@@ -93,42 +97,56 @@ class ListControllerTest extends AuthenticableControllerTest
             $params
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
 
-        // Check response status
-        $responseContent = $this->decodeResponse($client->getResponse()->getContent());
-
-        // Expected response from API
-        $expectedResponse = \json_decode($expectedJsonResponse, true);
-
-        // Compare retrieved data
-        $this->assertEquals($expectedResponse, $responseContent);
+        $this->applyValidationAsserts(
+            $expectedValidationErrors,
+            $this->decodeResponse($client->getResponse()->getContent())
+        );
     }
 
     public function dataProviderForTasksListWithFailedValidation(): array
     {
         return [
             'limit not in allowed limits' => [
-                [
+                'params' => [
                     'page' => 1,
                     'limit' => 5,
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": {}, "limit": { "errors": [ "This value is not valid." ] } } } }',
+                'expected validation errors' => [
+                    'limit' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                ],
             ],
             'inject in page' => [
                 [
                     'page' => 'UNION SELECT email, password FROM users',
                     'limit' => 10,
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": { "errors": [ "This value is not valid." ] }, "limit": {} } } }',
+                'expected validation errors' => [
+                    'page' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                ],
             ],
             'inject in limit' => [
                 [
                     'limit' => 'UNION SELECT email, password FROM users',
                     'page' => 1,
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "page": {}, "limit": { "errors": [ "This value is not valid." ] } } } }',
+                'expected validation errors' => [
+                    'limit' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                ],
             ],
         ];
     }

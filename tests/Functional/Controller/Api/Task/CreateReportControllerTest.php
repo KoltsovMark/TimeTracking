@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Api\Task;
 
 use App\DataFixtures\Test\Task\TaskFixtures;
+use App\Tests\Functional\Contract\ValidationAssertsInterface;
 use App\Tests\Functional\Controller\AuthenticableControllerTest;
+use App\Tests\Functional\Traits\ValidationAssertsTrait;
 
-class CreateReportControllerTest extends AuthenticableControllerTest
+class CreateReportControllerTest extends AuthenticableControllerTest implements ValidationAssertsInterface
 {
+    use ValidationAssertsTrait;
+
     /**
      * @covers \App\Controller\Api\Task\CreateReportController::generateReport
      *
@@ -81,7 +85,7 @@ class CreateReportControllerTest extends AuthenticableControllerTest
      *
      * @dataProvider dataProviderForGenerateReportFailedValidation
      */
-    public function testGenerateReportFailedValidation(array $params, string $expectedJsonResponse)
+    public function testGenerateReportFailedValidation(array $params, array $expectedValidationErrors)
     {
         $headers = [
             'ACCEPT' => 'application/json',
@@ -101,16 +105,13 @@ class CreateReportControllerTest extends AuthenticableControllerTest
             \json_encode($params)
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
 
-        // Check response status
-        $responseContent = $this->decodeResponse($client->getResponse()->getContent());
-
-        // Expected response from API
-        $expectedResponse = \json_decode($expectedJsonResponse, true);
-
-        $this->assertEquals($expectedResponse, $responseContent);
+        $this->applyValidationAsserts(
+            $expectedValidationErrors,
+            $this->decodeResponse($client->getResponse()->getContent())
+        );
     }
 
     public function dataProviderForGenerateReportFailedValidation(): array
@@ -118,7 +119,13 @@ class CreateReportControllerTest extends AuthenticableControllerTest
         return [
             'all fields blank' => [
                 'params' => [],
-                'expected response' => '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "start_date": {}, "end_date": {}, "format": { "errors": [ "This value should not be blank." ] } } } }',
+                'expected response' => [
+                    'format' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_BLANK_VALUE,
+                        ),
+                    ],
+                ],
             ],
             'wrong dates format' => [
                 'params' => [
@@ -126,7 +133,18 @@ class CreateReportControllerTest extends AuthenticableControllerTest
                     'end_date' => 'some text',
                     'format' => 'csv',
                 ],
-                'expected response' => '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "start_date": { "errors": [ "This value is not valid." ] }, "end_date": { "errors": [ "This value is not valid." ] }, "format": {} } } }',
+                'expected response' => [
+                    'start_date' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                    'end_date' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                ],
             ],
             'wrong data format' => [
                 'params' => [
@@ -134,7 +152,13 @@ class CreateReportControllerTest extends AuthenticableControllerTest
                     'end_date' => '2100-01-01 23:59:59',
                     'format' => 'wrong format',
                 ],
-                'expected response' => '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "start_date": {}, "end_date": {}, "format": { "errors": [ "This value is not valid." ] } } } }',
+                'expected response' => [
+                    'format' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE,
+                        ),
+                    ],
+                ],
             ],
         ];
     }

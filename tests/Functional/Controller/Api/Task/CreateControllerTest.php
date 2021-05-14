@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Api\Task;
 
+use App\Tests\Functional\Contract\ValidationAssertsInterface;
 use App\Tests\Functional\Controller\AuthenticableControllerTest;
+use App\Tests\Functional\Traits\ValidationAssertsTrait;
 use DateTime;
 use DateTimeZone;
 
-class CreateControllerTest extends AuthenticableControllerTest
+class CreateControllerTest extends AuthenticableControllerTest implements ValidationAssertsInterface
 {
+    use ValidationAssertsTrait;
+
     /**
      * @covers \App\Controller\Api\Task\CreateController::createTask
      *
@@ -88,7 +92,7 @@ class CreateControllerTest extends AuthenticableControllerTest
      *
      * @dataProvider dataProviderForCreateTaskFailedValidation
      */
-    public function testCreateTaskFailedValidation(array $params, string $expectedJsonResponse)
+    public function testCreateTaskFailedValidation(array $params, array $expectedValidationErrors)
     {
         $headers = [
             'ACCEPT' => 'application/json',
@@ -108,59 +112,116 @@ class CreateControllerTest extends AuthenticableControllerTest
             \json_encode($params)
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
 
-        // Check response status
-        $responseContent = $this->decodeResponse($client->getResponse()->getContent());
-
-        // Expected response from API
-        $expectedResponse = \json_decode($expectedJsonResponse, true);
-
-        $this->assertEquals($expectedResponse, $responseContent);
+        $this->applyValidationAsserts(
+            $expectedValidationErrors,
+            $this->decodeResponse($client->getResponse()->getContent())
+        );
     }
 
     public function dataProviderForCreateTaskFailedValidation(): array
     {
         return [
             'empty params' => [
-                [],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "title": { "errors": [ "This value should not be blank." ] }, "comment": {}, "time_spent": { "errors": [ "This value should not be blank." ] }, "date": { "errors": [ "This value should not be blank." ] } } } }',
+                'params' => [],
+                'expected validation errors' => [
+                    'title' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_BLANK_VALUE
+                        ),
+                    ],
+                    'time_spent' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_BLANK_VALUE
+                        ),
+                    ],
+                    'date' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_BLANK_VALUE
+                        ),
+                    ],
+                ],
             ],
             'max fields values' => [
-                [
+                'params' => [
                     'title' => \str_pad($this->getFaker()->text(256), 256, 'w'),
                     'comment' => \str_pad($this->getFaker()->text(100001), 100001, 'w'),
                     'time_spent' => 4294967296,
                     'date' => '2011-04-08 00:00:00',
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "title": { "errors": [ "This value is too long. It should have 255 characters or less." ] }, "comment": { "errors": [ "This value is too long. It should have 10000 characters or less." ] }, "time_spent": { "errors": [ "This value should be 4294967295 or less." ] }, "date": {} } } }',
+                'expected validation errors' => [
+                    'title' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_MAX_LENGTH_VALUE,
+                            [
+                                ValidationAssertsInterface::MAX_LENGTH_PARAMETER => 255,
+                            ],
+                        ),
+                    ],
+                    'comment' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_MAX_LENGTH_VALUE,
+                            [
+                                ValidationAssertsInterface::MAX_LENGTH_PARAMETER => 10000,
+                            ],
+                        ),
+                    ],
+                    'time_spent' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_MAX_VALUE,
+                            [
+                                ValidationAssertsInterface::MAX_VALUE_PARAMETER => 4294967295,
+                            ],
+                        ),
+                    ],
+                ],
             ],
             'negative time_spent' => [
-                [
+                'params' => [
                     'title' => 'functional test title',
                     'comment' => 'functional test comment',
                     'time_spent' => -100,
                     'date' => '2011-04-08 00:00:00',
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "title": {}, "comment": {}, "time_spent": { "errors": [ "This value should be positive." ] }, "date": {} } } }',
+                'expected validation errors' => [
+                    'time_spent' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_POSITIVE_VALUE
+                        ),
+                    ],
+                ],
             ],
             'wrong date format' => [
-                [
+                'params' => [
                     'title' => 'functional test title',
                     'comment' => 'functional test comment',
                     'time_spent' => 10000,
                     'date' => '08-04-2012 00:00:00',
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "title": {}, "comment": {}, "time_spent": {}, "date": { "errors": [ "This value is not valid." ] } } } }',
+                'expected validation errors' => [
+                    'date' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE
+                        ),
+                    ],
+                ],
             ],
             'date without time' => [
-                ['title' => 'functional test title',
-                 'comment' => 'functional test comment',
-                 'time_spent' => 10000,
-                 'date' => '08-04-2012',
+                'params' => [
+                    'title' => 'functional test title',
+                     'comment' => 'functional test comment',
+                     'time_spent' => 10000,
+                     'date' => '08-04-2012',
                 ],
-                '{ "code": 400, "message": "Validation Failed", "errors": { "children": { "title": {}, "comment": {}, "time_spent": {}, "date": { "errors": [ "This value is not valid." ] } } } }',
+                'expected validation errors' => [
+                    'date' => [
+                        $this->getExpectedConstraintMessage(
+                            ValidationAssertsInterface::CONSTRAINT_TYPE_INVALID_VALUE
+                        ),
+                    ],
+                ],
             ],
         ];
     }
