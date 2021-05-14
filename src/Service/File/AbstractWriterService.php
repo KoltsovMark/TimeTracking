@@ -50,4 +50,11 @@ abstract class AbstractWriterService implements FileWriterInterface
 
         return "{$fullPath}.{$this->getExtension()}";
     }
+
+    public function createDirectoryIfDoNotExist(string $path): void
+    {
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+    }
 }

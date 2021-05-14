@@ -42,7 +42,12 @@ class PdfWriterServiceTest extends KernelTestCase
      */
     public function testWrite(string $fileName, string $data, string $expectedPath)
     {
-        $partialMock = $this->getPdfWriterServicePartialMock(['validate', 'getFullPath', 'getDompdf']);
+        $partialMock = $this->getPdfWriterServicePartialMock([
+            'validate',
+            'getFullPath',
+            'getDompdf',
+            'createDirectoryIfDoNotExist',
+        ]);
         $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
             $this->projectPublicDirectory,
             $expectedPath,
@@ -56,6 +61,12 @@ class PdfWriterServiceTest extends KernelTestCase
             ->expects($this->once())
             ->method('validate')
             ->with(...[$data])
+        ;
+
+        $partialMock
+            ->expects($this->once())
+            ->method('createDirectoryIfDoNotExist')
+            ->with(...[$expectedPath])
         ;
 
         $partialMock

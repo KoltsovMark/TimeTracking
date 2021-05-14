@@ -25,7 +25,7 @@ class CsvWriterServiceTest extends KernelTestCase
      */
     public function testWrite(string $fileName, array $data, string $expectedPath)
     {
-        $partialMock = $this->getCsvWriterServicePartialMock(['validate', 'getFullPath']);
+        $partialMock = $this->getCsvWriterServicePartialMock(['validate', 'getFullPath', 'createDirectoryIfDoNotExist']);
         $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
             $this->projectPublicDirectory,
             $expectedPath,
@@ -36,6 +36,12 @@ class CsvWriterServiceTest extends KernelTestCase
             ->expects($this->once())
             ->method('validate')
             ->with(...[$data])
+        ;
+
+        $partialMock
+            ->expects($this->once())
+            ->method('createDirectoryIfDoNotExist')
+            ->with(...[$expectedPath])
         ;
 
         $partialMock

@@ -34,6 +34,7 @@ class CsvWriterService extends AbstractWriterService
     public function write(string $fileName, $data, string $path = null): string
     {
         $this->validate($data);
+        $this->createDirectoryIfDoNotExist($path);
 
         $fullPath = $this->getFullPath($fileName, $path);
         $this->csvExtension->save($fullPath, $data);

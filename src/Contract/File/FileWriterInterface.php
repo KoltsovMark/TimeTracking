@@ -26,4 +26,9 @@ interface FileWriterInterface
     public function validate($data): void;
 
     public function getFullPath(string $fileName, string $path = null): string;
+
+    /**
+     * Create a directory on file system due to path.
+     */
+    public function createDirectoryIfDoNotExist(string $path);
 }

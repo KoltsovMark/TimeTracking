@@ -47,7 +47,13 @@ class XlsxWriterServiceTest extends KernelTestCase
      */
     public function testWrite(string $fileName, array $data, string $expectedPath)
     {
-        $partialMock = $this->getXlsxWriterServicePartialMock(['validate', 'getFullPath', 'getSpreadsheet', 'getXlsx']);
+        $partialMock = $this->getXlsxWriterServicePartialMock([
+            'validate',
+            'getFullPath',
+            'getSpreadsheet',
+            'getXlsx',
+            'createDirectoryIfDoNotExist',
+        ]);
         $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
             $this->projectPublicDirectory,
             $expectedPath,
@@ -58,6 +64,12 @@ class XlsxWriterServiceTest extends KernelTestCase
             ->expects($this->once())
             ->method('validate')
             ->with(...[$data])
+        ;
+
+        $partialMock
+            ->expects($this->once())
+            ->method('createDirectoryIfDoNotExist')
+            ->with(...[$expectedPath])
         ;
 
         $partialMock
