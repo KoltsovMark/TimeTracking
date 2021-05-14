@@ -1,0 +1,15 @@
+jms_serializer:
+    visitors:
+        xml_serialization:
+            format_output: '%kernel.debug%'
+    property_naming:
+        separator: _
+        lower_case: true
+    metadata:
+        directories:
+            KnpPaginatorBundle:
+                namespace_prefix: Knp\Bundle\PaginatorBundle
+                path: "%kernel.project_dir%/config/serializer/KnpPaginatorBundle"
+            KnpPager:
+                namespace_prefix: Knp\Component\Pager
+                path: "%kernel.project_dir%/config/serializer/KnpPager"

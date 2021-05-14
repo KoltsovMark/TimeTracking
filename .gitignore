@@ -15,4 +15,23 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
 .idea
+/public/reports
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> docker ###
+/docker-compose.override.yml
+/docker/.env
+###< docker ###
