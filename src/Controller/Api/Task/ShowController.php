@@ -69,7 +69,6 @@ class ShowController extends BaseController
      */
     public function show(Task $task)
     {
-        //@todo add voter
         if ($task->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }

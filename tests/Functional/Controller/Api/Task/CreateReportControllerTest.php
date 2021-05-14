@@ -106,7 +106,7 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
         );
 
         // Check response code
-        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
 
         $this->applyValidationAsserts(
             $expectedValidationErrors,

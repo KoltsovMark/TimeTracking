@@ -14,7 +14,7 @@ trait ValidationAssertsTrait
     public function applyValidationAsserts(array $expectedResult, array $requestContent): void
     {
         // Check response code and message
-        $this->assertEquals(400, $requestContent['code']);
+        $this->assertEquals(422, $requestContent['code']);
         $this->assertEquals(
             $this->getExpectedConstraintMessage(ValidationAssertsInterface::VALIDATION_FAILED),
             $requestContent['message']
