@@ -6,7 +6,6 @@ namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
 use App\Entity\Task\Task;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation as SWG;
 use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,7 +16,6 @@ class ShowController extends BaseController
     /**
      * @Route("tasks/{id}", name="tasks_show", requirements={"id"="\d+"}, methods={"GET"})
      * @Security("is_granted('ROLE_TASKS_VIEWER')")
-     * @Rest\View(statusCode=200)
      *
      * @SWG\Security(name="Bearer")
      * @OA\Get(
@@ -73,6 +71,6 @@ class ShowController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        return $task;
+        return $this->successResponse($task);
     }
 }

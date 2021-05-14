@@ -1,6 +1,7 @@
 # TimeTracking
 
 ### Dependencies
+* Composer 2.0
 * Php 7.4 
 * Mysql 8.0 
 * Docker version 20.10.6, build 370c289 

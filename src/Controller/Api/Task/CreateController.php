@@ -10,28 +10,32 @@ use App\Entity\Task\Task;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Form\Api\Task\CreateTaskType;
 use App\Service\Task\CreateTaskService;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation as SWG;
 use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateController extends BaseController
 {
     private CreateTaskDtoFactory $createTaskDtoFactory;
     private CreateTaskService $createTaskService;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(CreateTaskDtoFactory $createTaskDtoFactory, CreateTaskService $createTaskService)
-    {
+    public function __construct(
+        CreateTaskDtoFactory $createTaskDtoFactory,
+        CreateTaskService $createTaskService,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->createTaskDtoFactory = $createTaskDtoFactory;
         $this->createTaskService = $createTaskService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
      * @Route("tasks", name="tasks_create", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_CREATOR')")
-     * @Rest\View(statusCode=201)
      *
      * @SWG\Security(name="Bearer")
      * @OA\Post(
@@ -91,7 +95,7 @@ class CreateController extends BaseController
         $form = $this->createApiForm(CreateTaskType::class, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return $form;
+            return $this->failedValidationResponse($form);
         }
 
         /**
@@ -105,7 +109,12 @@ class CreateController extends BaseController
         );
 
         $task = $this->createTaskService->createTask($createTaskDto);
+        $url = $this->urlGenerator->generate(
+            'tasks_show',
+            ['id' => $task->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
-        return $task;
+        return $this->createdResponse($task, $url);
     }
 }

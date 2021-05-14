@@ -9,7 +9,6 @@ use App\Dto\Api\Form\PaginatedPageTypeDto;
 use App\Entity\Task\Task;
 use App\Form\Api\PaginatedPageType;
 use App\Repository\Task\TaskRepository;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
 use Nelmio\ApiDocBundle\Annotation as SWG;
 use OpenApi\Annotations as OA;
@@ -31,7 +30,6 @@ class ListController extends BaseController
     /**
      * @Route("tasks", name="tasks_list", methods={"GET"})
      * @Security("is_granted('ROLE_TASKS_VIEWER')")
-     * @Rest\View(statusCode=200)
      *
      * @SWG\Security(name="Bearer")
      * @OA\Get(
@@ -104,7 +102,7 @@ class ListController extends BaseController
         $form = $this->createGetForm(PaginatedPageType::class, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return $form;
+            return $this->failedValidationResponse($form);
         }
 
         /**
@@ -112,10 +110,12 @@ class ListController extends BaseController
          */
         $paginatedPageDto = $form->getData();
 
-        return $this->paginator->paginate(
-            $this->taskRepository->findQueryByUser($this->getUser()),
-            $paginatedPageDto->getPage() ?? 1,
-            $paginatedPageDto->getLimit() ?? 10,
+        return $this->successResponse(
+            $this->paginator->paginate(
+                $this->taskRepository->findQueryByUser($this->getUser()),
+                $paginatedPageDto->getPage() ?? 1,
+                $paginatedPageDto->getLimit() ?? 10,
+            )
         );
     }
 }

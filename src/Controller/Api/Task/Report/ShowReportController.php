@@ -6,7 +6,6 @@ namespace App\Controller\Api\Task\Report;
 
 use App\Controller\Api\BaseController;
 use App\Entity\Task\TasksReport;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation as SWG;
 use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,7 +25,6 @@ class ShowReportController extends BaseController
     /**
      * @Route("tasks/report/{id}", name="tasks_report_show", requirements={"id"="\d+"}, methods={"GET"})
      * @Security("is_granted('ROLE_TASKS_REPORT_VIEWER')")
-     * @Rest\View(statusCode=200)
      *
      * @SWG\Security(name="Bearer")
      * @OA\Get(
@@ -89,9 +87,11 @@ class ShowReportController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        return [
-            'content' => base64_encode(file_get_contents($tasksReport->getStorageFullPath())),
-            'extension' => pathinfo($tasksReport->getStorageFullPath())['extension'],
-        ];
+        return $this->successResponse(
+            [
+                'content' => base64_encode(file_get_contents($tasksReport->getStorageFullPath())),
+                'extension' => pathinfo($tasksReport->getStorageFullPath())['extension'],
+            ]
+        );
     }
 }

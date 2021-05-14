@@ -15,18 +15,22 @@ use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateReportController extends BaseController
 {
     private GenerateTasksReportDtoFactory $generateTasksReportDtoFactory;
     private ReportTasksService $reportTasksService;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         GenerateTasksReportDtoFactory $generateTasksReportDtoFactory,
-        ReportTasksService $reportTasksService
+        ReportTasksService $reportTasksService,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->generateTasksReportDtoFactory = $generateTasksReportDtoFactory;
         $this->reportTasksService = $reportTasksService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -89,7 +93,7 @@ class CreateReportController extends BaseController
         $form = $this->createApiForm(GenerateTasksReportType::class, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return $form;
+            return $this->failedValidationResponse($form);
         }
 
         $generateTasksReportDto = $this->generateTasksReportDtoFactory->createFromArray(
@@ -98,6 +102,12 @@ class CreateReportController extends BaseController
 
         $tasksReport = $this->reportTasksService->generateReport($generateTasksReportDto);
 
-        return $tasksReport;
+        $url = $this->urlGenerator->generate(
+            'tasks_report_show',
+            ['id' => $tasksReport->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        return $this->createdResponse($tasksReport, $url);
     }
 }
