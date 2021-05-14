@@ -112,9 +112,6 @@ class ListController extends BaseController
          */
         $paginatedPageDto = $form->getData();
 
-        /*
-         * @todo move paginator to a separates service
-         */
         return $this->paginator->paginate(
             $this->taskRepository->findQueryByUser($this->getUser()),
             $paginatedPageDto->getPage() ?? 1,

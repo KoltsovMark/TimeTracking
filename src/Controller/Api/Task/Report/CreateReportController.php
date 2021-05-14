@@ -86,10 +86,6 @@ class CreateReportController extends BaseController
      */
     public function new(Request $request)
     {
-        /**
-         * @todo Add queue for background generation
-         * @todo add additional endpoint for show file to improve usability
-         */
         $form = $this->createApiForm(GenerateTasksReportType::class, $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {

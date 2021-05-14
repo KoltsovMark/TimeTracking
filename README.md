@@ -45,6 +45,7 @@ docker-compose --env-file=./docker/.env exec php php bin/console doctrine:migrat
 docker-compose --env-file=./docker/.env exec php php bin/console doctrine:fixtures:load --group=demo
 ```
 
+
 ### Docs
 ```
 http://localhost/api/doc
@@ -59,3 +60,13 @@ docker-compose --env-file=./docker/.env exec php composer phpunit
 ```
 docker-compose --env-file=./docker/.env exec php composer test
 ```
+
+### Improvements plan
+* Add resources, return resources instead of entity
+* Move paginator to a separate service to reduce code cohesion
+* Add events system, e.g. report created
+* Add report file generation by chunks, where it is possible to reduce memory usage
+* Add queue broker, move reports generation to background
+* Add additional filters, ordering to resource list endpoints
+* Add cod style check on commit event
+* Add tests launching pipelines on request creation

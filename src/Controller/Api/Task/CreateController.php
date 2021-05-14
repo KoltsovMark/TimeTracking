@@ -106,7 +106,6 @@ class CreateController extends BaseController
 
         $task = $this->createTaskService->createTask($createTaskDto);
 
-        // @todo add Resource instead of entity
         return $task;
     }
 }

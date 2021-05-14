@@ -45,7 +45,6 @@ class ReportTasksService
      */
     public function generateReport(GenerateTasksReportDto $generateTasksReportDto): TasksReport
     {
-        //@todo add events to service
         $reportWriter = $this->taskReportServiceFactory->create($generateTasksReportDto->getFormat());
 
         $tasksStatistic = $this->taskRepository->getStatisticsByUserAndDateRange(
@@ -82,7 +81,6 @@ class ReportTasksService
         ;
         $this->manager->save($tasksReport);
 
-        //@todo add generation by chunks when it possible
         return $tasksReport;
     }
 
