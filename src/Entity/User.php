@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     use TimestampableEntity;
+    
+    public const EMAIL_MAX_LENGTH = 180;
 
     /**
      * @ORM\Id

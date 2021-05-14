@@ -63,7 +63,7 @@ class CreateReportController extends BaseController
      *         )
      *     ),
      *     @OA\Response(
-     *         response=400,
+     *         response=422,
      *         description="Validation failed",
      *         @OA\MediaType(
      *             mediaType="application/json",
