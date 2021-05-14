@@ -26,7 +26,11 @@ class CsvWriterServiceTest extends KernelTestCase
     public function testWrite(string $fileName, array $data, string $expectedPath)
     {
         $partialMock = $this->getCsvWriterServicePartialMock(['validate', 'getFullPath']);
-        $expectedFullPath = "$this->projectPublicDirectory/{$expectedPath}/{$fileName}.csv";
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.csv",
+        ]);
 
         $partialMock
             ->expects($this->once())
@@ -102,12 +106,16 @@ class CsvWriterServiceTest extends KernelTestCase
      *
      * @dataProvider dataProviderForGetFullPath
      */
-    public function testGetFullPath(string $fileName, string $path)
+    public function testGetFullPath(string $fileName, string $expectedPath)
     {
-        $expectedPath = "$this->projectPublicDirectory/{$path}/{$fileName}.csv";
-        $fullPath = self::$container->get(CsvWriterService::class)->getFullPath($fileName, $path);
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.csv",
+        ]);
+        $fullPath = self::$container->get(CsvWriterService::class)->getFullPath($fileName, $expectedPath);
 
-        $this->assertEquals($expectedPath, $fullPath);
+        $this->assertEquals($expectedFullPath, $fullPath);
     }
 
     public function dataProviderForGetFullPath(): array
@@ -126,7 +134,7 @@ class CsvWriterServiceTest extends KernelTestCase
 
         self::bootKernel();
 
-        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').'/public';
+        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.'public';
 
         $this->csvExtensionMock = $this->createMock(Csv::class);
     }

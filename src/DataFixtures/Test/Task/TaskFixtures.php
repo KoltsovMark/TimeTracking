@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Test\Task;
 
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;

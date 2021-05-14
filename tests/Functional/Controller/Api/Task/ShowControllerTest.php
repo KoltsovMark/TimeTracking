@@ -35,7 +35,7 @@ class ShowControllerTest extends AuthenticableControllerTest
             "api/tasks/{$taskId}",
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Check response status
@@ -86,7 +86,7 @@ class ShowControllerTest extends AuthenticableControllerTest
             "api/tasks/{$taskId}",
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals($expectedCode, $client->getResponse()->getStatusCode());
 
         // Check response status
@@ -110,7 +110,7 @@ class ShowControllerTest extends AuthenticableControllerTest
                 'id' => 9999,
                 'code' => 404,
                 'title' => 'An error occurred',
-                'message' => 'App\\Entity\\Task object not found by the @ParamConverter annotation.',
+                'message' => 'App\Entity\Task\Task object not found by the @ParamConverter annotation.',
             ],
             'inject SQL in id' => [
                 'id' => 'UNION SELECT email, password FROM users',

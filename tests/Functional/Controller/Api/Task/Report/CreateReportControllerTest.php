@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\Controller\Api\Task;
+namespace App\Tests\Functional\Controller\Api\Task\Report;
 
 use App\DataFixtures\Test\Task\TaskFixtures;
 use App\Tests\Functional\Contract\ValidationAssertsInterface;
@@ -18,7 +18,7 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
      *
      * @dataProvider dataProviderForGenerateReportSuccess
      */
-    public function testGenerateReportSuccess(array $params, string $expectedExtension)
+    public function testGenerateReportSuccess(array $params)
     {
         $headers = [
             'ACCEPT' => 'application/json',
@@ -38,16 +38,16 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
             \json_encode($params)
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
 
         // Check response status
         $responseContent = $this->decodeResponse($client->getResponse()->getContent());
 
         // Compare retrieved data
-        $this->assertCount(2, $responseContent);
-        $this->assertArrayHasKey('content', $responseContent);
-        $this->assertEquals($expectedExtension, $responseContent['extension']);
+        $this->assertCount(1, $responseContent);
+        $this->assertArrayHasKey('id', $responseContent);
+        $this->assertIsInt($responseContent['id']);
     }
 
     public function dataProviderForGenerateReportSuccess(): array
@@ -59,7 +59,6 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
                     'end_date' => '2100-01-01 23:59:59',
                     'format' => 'csv',
                 ],
-                'expected_extension' => 'csv',
             ],
             'success report in xlsx' => [
                 [
@@ -67,7 +66,6 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
                     'end_date' => '2100-01-01 23:59:59',
                     'format' => 'excel',
                 ],
-                'expected_extension' => 'xlsx',
             ],
             'success report in pdf' => [
                 [
@@ -75,7 +73,6 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
                     'end_date' => '2100-01-01 23:59:59',
                     'format' => 'pdf',
                 ],
-                'expected_extension' => 'pdf',
             ],
         ];
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service\Task\File;
 
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Factory\Api\Task\Dto\TasksReportDataDtoFactory;
 use App\Service\File\CsvWriterService;
 use App\Service\Task\File\TaskReportCsvService;

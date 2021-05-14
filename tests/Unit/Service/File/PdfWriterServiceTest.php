@@ -43,7 +43,11 @@ class PdfWriterServiceTest extends KernelTestCase
     public function testWrite(string $fileName, string $data, string $expectedPath)
     {
         $partialMock = $this->getPdfWriterServicePartialMock(['validate', 'getFullPath', 'getDompdf']);
-        $expectedFullPath = "$this->projectPublicDirectory/{$expectedPath}/{$fileName}.csv";
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.pdf",
+        ]);
         $expectedDom = '<html></html>';
         $expectedPaper = 'A4';
         $expectedOrientation = 'portrait';
@@ -166,12 +170,16 @@ class PdfWriterServiceTest extends KernelTestCase
      *
      * @dataProvider dataProviderForGetFullPath
      */
-    public function testGetFullPath(string $fileName, string $path)
+    public function testGetFullPath(string $fileName, string $expectedPath)
     {
-        $expectedPath = "$this->projectPublicDirectory/{$path}/{$fileName}.pdf";
-        $fullPath = self::$container->get(PdfWriterService::class)->getFullPath($fileName, $path);
+        $fullPath = self::$container->get(PdfWriterService::class)->getFullPath($fileName, $expectedPath);
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.pdf",
+        ]);
 
-        $this->assertEquals($expectedPath, $fullPath);
+        $this->assertEquals($expectedFullPath, $fullPath);
     }
 
     /**
@@ -193,7 +201,7 @@ class PdfWriterServiceTest extends KernelTestCase
 
         self::bootKernel();
 
-        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').'/public';
+        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.'public';
 
         $this->filesystemMock = $this->createMock(Filesystem::class);
         $this->pdfWriterConfigurationMock = $this->createMock(PdfWriterConfiguration::class);

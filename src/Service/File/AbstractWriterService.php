@@ -40,7 +40,12 @@ abstract class AbstractWriterService implements FileWriterInterface
         if (empty($path)) {
             $fullPath = $fileName;
         } else {
-            $fullPath = "{$this->projectDir}/public/{$path}/{$fileName}";
+            $fullPath = implode(DIRECTORY_SEPARATOR, [
+                $this->projectDir,
+                'public',
+                $path,
+                $fileName,
+            ]);
         }
 
         return "{$fullPath}.{$this->getExtension()}";

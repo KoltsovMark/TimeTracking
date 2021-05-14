@@ -6,9 +6,9 @@ namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
 use App\Dto\Api\Form\PaginatedPageTypeDto;
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Form\Api\PaginatedPageType;
-use App\Repository\TaskRepository;
+use App\Repository\Task\TaskRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
 use Nelmio\ApiDocBundle\Annotation as SWG;

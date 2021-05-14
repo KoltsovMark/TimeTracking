@@ -35,7 +35,7 @@ class ListControllerTest extends AuthenticableControllerTest implements Validati
             $params
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Check response status

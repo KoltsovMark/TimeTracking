@@ -2,34 +2,46 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Task;
+namespace App\Controller\Api\Task\Report;
 
 use App\Controller\Api\BaseController;
-use App\Entity\Task\Task;
+use App\Entity\Task\TasksReport;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation as SWG;
 use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ShowController extends BaseController
+class ShowReportController extends BaseController
 {
+    private Filesystem $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
     /**
-     * @Route("tasks/{id}", name="tasks_show", requirements={"id"="\d+"}, methods={"GET"})
-     * @Security("is_granted('ROLE_TASKS_VIEWER')")
+     * @Route("tasks/report/{id}", name="tasks_report_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Security("is_granted('ROLE_TASKS_REPORT_VIEWER')")
      * @Rest\View(statusCode=200)
      *
      * @SWG\Security(name="Bearer")
      * @OA\Get(
      *     tags={"Tasks"},
-     *     summary="Show task details",
-     *     description="Show task details",
+     *     summary="Show report content",
+     *     description="Show report content",
      *     @OA\Response(
      *         response=200,
-     *         description="Return task details",
+     *         description="Report exist and returned",
      *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OA\Schema(ref=@SWG\Model(type=Task::class))
+     *             @OA\Schema(
+     *                @OA\Property(property="content", type="string", example="VGl0bGUsQ29tbWVudCxUaW1lLERhdGUsRW1haWwsVG90YWwgVGFza3MsVG90YWwgVGltZSBTcGVudA0sLCwsLDAsMA0"),
+     *                @OA\Property(property="extension", type="string", example="csv")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -56,7 +68,7 @@ class ShowController extends BaseController
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Task not found",
+     *         description="Report not found",
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
@@ -67,12 +79,19 @@ class ShowController extends BaseController
      *     )
      * )
      */
-    public function show(Task $task)
+    public function show(TasksReport $tasksReport)
     {
-        if ($task->getUser() !== $this->getUser()) {
+        if ($tasksReport->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }
 
-        return $task;
+        if (!$this->filesystem->exists($tasksReport->getStorageFullPath())) {
+            throw $this->createNotFoundException();
+        }
+
+        return [
+            'content' => base64_encode(file_get_contents($tasksReport->getStorageFullPath())),
+            'extension' => pathinfo($tasksReport->getStorageFullPath())['extension'],
+        ];
     }
 }

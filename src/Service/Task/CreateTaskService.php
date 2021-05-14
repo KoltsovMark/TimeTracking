@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Task;
 
 use App\Dto\Api\Task\CreateTaskDto;
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Manager\DoctrineManager;
 
 /**

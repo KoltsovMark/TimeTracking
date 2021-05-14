@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Task;
+namespace App\Controller\Api\Task\Report;
 
 use App\Controller\Api\BaseController;
+use App\Entity\Task\TasksReport;
 use App\Factory\Api\Task\Dto\GenerateTasksReportDtoFactory;
 use App\Form\Api\Task\GenerateTasksReportType;
 use App\Service\Task\ReportTasksService;
@@ -29,7 +30,7 @@ class CreateReportController extends BaseController
     }
 
     /**
-     * @Route("tasks/report", name="tasks_generate", methods={"POST"})
+     * @Route("tasks/report", name="tasks_report_create", methods={"POST"})
      * @Security("is_granted('ROLE_TASKS_REPORT_CREATOR')")
      * @Rest\View(statusCode=201)
      *
@@ -46,14 +47,8 @@ class CreateReportController extends BaseController
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Report created",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                @OA\Property(property="content", type="string", example="VGl0bGUsQ29tbWVudCxUaW1lLERhdGUsRW1haWwsVG90YWwgVGFza3MsVG90YWwgVGltZSBTcGVudA0sLCwsLDAsMA0"),
-     *                @OA\Property(property="extension", type="string", example="csv")
-     *             )
-     *         )
+     *         description="Task created",
+     *         @SWG\Model(type=TasksReport::class)
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -105,11 +100,8 @@ class CreateReportController extends BaseController
             \array_merge($form->getData(), ['user' => $this->getUser()])
         );
 
-        $reportPath = $this->reportTasksService->generateReport($generateTasksReportDto);
+        $tasksReport = $this->reportTasksService->generateReport($generateTasksReportDto);
 
-        return [
-            'content' => base64_encode(file_get_contents($reportPath)),
-            'extension' => pathinfo($reportPath)['extension'],
-        ];
+        return $tasksReport;
     }
 }

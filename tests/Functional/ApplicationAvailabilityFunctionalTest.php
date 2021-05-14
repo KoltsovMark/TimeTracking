@@ -97,7 +97,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                 'params' => [
                     'start_date' => '2100-01-01 00:00:00',
                     'end_date' => '2100-01-01 23:59:59',
-                    'format' => 'pdf',
+                    'format' => 'csv',
                 ],
             ],
         ];

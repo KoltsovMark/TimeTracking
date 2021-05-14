@@ -48,7 +48,11 @@ class XlsxWriterServiceTest extends KernelTestCase
     public function testWrite(string $fileName, array $data, string $expectedPath)
     {
         $partialMock = $this->getXlsxWriterServicePartialMock(['validate', 'getFullPath', 'getSpreadsheet', 'getXlsx']);
-        $expectedFullPath = "$this->projectPublicDirectory/{$expectedPath}/{$fileName}.xlsx";
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.xlsx",
+        ]);
 
         $partialMock
             ->expects($this->once())
@@ -152,12 +156,16 @@ class XlsxWriterServiceTest extends KernelTestCase
      *
      * @dataProvider dataProviderForGetFullPath
      */
-    public function testGetFullPath(string $fileName, string $path)
+    public function testGetFullPath(string $fileName, string $expectedPath)
     {
-        $expectedPath = "$this->projectPublicDirectory/{$path}/{$fileName}.xlsx";
-        $fullPath = self::$container->get(XlsxWriterService::class)->getFullPath($fileName, $path);
+        $expectedFullPath = \implode(DIRECTORY_SEPARATOR, [
+            $this->projectPublicDirectory,
+            $expectedPath,
+            "{$fileName}.xlsx",
+        ]);
+        $fullPath = self::$container->get(XlsxWriterService::class)->getFullPath($fileName, $expectedPath);
 
-        $this->assertEquals($expectedPath, $fullPath);
+        $this->assertEquals($expectedFullPath, $fullPath);
     }
 
     /**
@@ -179,7 +187,7 @@ class XlsxWriterServiceTest extends KernelTestCase
 
         self::bootKernel();
 
-        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').'/public';
+        $this->projectPublicDirectory = self::$container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.'public';
         $this->pdfWriterService = $this->createMock(PdfWriterService::class);
 
         $this->spreadsheetMock = $this->createMock(Spreadsheet::class);

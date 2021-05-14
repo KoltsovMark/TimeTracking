@@ -39,7 +39,7 @@ class CreateControllerTest extends AuthenticableControllerTest implements Valida
             \json_encode($params)
         );
 
-        // Check response status and code
+        // Check response code
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
 
         // Check response status

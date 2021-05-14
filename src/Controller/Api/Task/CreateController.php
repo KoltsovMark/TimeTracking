@@ -6,7 +6,7 @@ namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
 use App\Dto\Api\Form\Task\CreateTaskTypeDto;
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Form\Api\Task\CreateTaskType;
 use App\Service\Task\CreateTaskService;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Service\Task;
 
 use App\Dto\Api\Form\Task\CreateTaskTypeDto;
-use App\Entity\Task;
+use App\Entity\Task\Task;
 use App\Entity\User;
 use App\Factory\Api\Task\Dto\CreateTaskDtoFactory;
 use App\Manager\DoctrineManager;

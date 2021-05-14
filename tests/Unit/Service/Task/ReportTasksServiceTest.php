@@ -6,10 +6,12 @@ namespace App\Tests\Unit\Service\Task;
 
 use App\Dto\Api\Task\GenerateTasksReportDto;
 use App\Dto\Api\Task\TasksReportDataDto;
+use App\Entity\Task\TasksReport;
 use App\Entity\User;
 use App\Factory\Api\Task\Dto\TasksReportDataDtoFactory;
 use App\Factory\Api\Task\File\TaskReportServiceFactory;
-use App\Repository\TaskRepository;
+use App\Manager\DoctrineManager;
+use App\Repository\Task\TaskRepository;
 use App\Service\Task\File\TaskReportPdfService;
 use App\Service\Task\ReportTasksService;
 use App\Tests\Unit\Traits\AccessiblePrivatePropertyTrait;
@@ -23,22 +25,14 @@ class ReportTasksServiceTest extends TestCase
 {
     use AccessiblePrivatePropertyTrait;
 
-    /**
-     * @var TaskReportServiceFactory|\PHPUnit\Framework\MockObject\MockObject
-     */
+    public const STORAGE_FILE = 1;
+    public const STORAGE_TYPE_LOCAL = 1;
+
     protected TaskReportServiceFactory $taskReportServiceFactoryMock;
-    /**
-     * @var TasksReportDataDtoFactory|\PHPUnit\Framework\MockObject\MockObject
-     */
     protected TasksReportDataDtoFactory $tasksReportDataDtoFactoryMock;
-    /**
-     * @var TaskReportPdfService|\PHPUnit\Framework\MockObject\MockObject
-     */
     protected TaskReportPdfService $taskReportPdfServiceMock;
-    /**
-     * @var TaskRepository|\PHPUnit\Framework\MockObject\MockObject
-     */
     protected TaskRepository $taskRepositoryMock;
+    protected DoctrineManager $managerMock;
 
     /**
      * @covers \App\Service\Task\ReportTasksService::generateReport
@@ -53,7 +47,11 @@ class ReportTasksServiceTest extends TestCase
             'total_time_spent' => 10000,
         ];
         $fileName = 'tmp_name';
-        $filePath = 'reports/task/'.$fileName;
+        $filePath = \implode(DIRECTORY_SEPARATOR, [
+            'reports',
+            'task',
+            $fileName,
+        ]);
         $tasks = [];
         $tasksReportDataDto = new TasksReportDataDto();
 
@@ -103,15 +101,32 @@ class ReportTasksServiceTest extends TestCase
             ->willReturn($filePath)
         ;
 
+        // Prepare expected tasks report entity to storage
+        $expectedTasksReport = (new TasksReport())->setStorage(self::STORAGE_FILE)
+            ->setStorageType(self::STORAGE_TYPE_LOCAL)
+            ->setStorageName($fileName)
+            ->setStorageFullPath($filePath)
+            ->setUser($user)
+            ->setReportOptions([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ])
+        ;
+
+        $this->managerMock
+            ->expects($this->once())
+            ->method('save')
+            ->with(...[$expectedTasksReport])
+        ;
+
         $generateTasksReportDto = (new GenerateTasksReportDto())->setStartDate($startDate)
             ->setEndDate($endDate)
             ->setFormat($format)
             ->setUser($user)
         ;
-        $result = $reportTasksServicePartialMock->generateReport($generateTasksReportDto);
+        $tasksReport = $reportTasksServicePartialMock->generateReport($generateTasksReportDto);
 
-        $this->assertIsString($result);
-        $this->assertEquals($filePath, $result);
+        $this->assertEquals($expectedTasksReport, $tasksReport);
     }
 
     /**
@@ -149,6 +164,7 @@ class ReportTasksServiceTest extends TestCase
         $this->tasksReportDataDtoFactoryMock = $this->createMock(TasksReportDataDtoFactory::class);
         $this->taskRepositoryMock = $this->createMock(TaskRepository::class);
         $this->taskReportPdfServiceMock = $this->createMock(TaskReportPdfService::class);
+        $this->managerMock = $this->createMock(DoctrineManager::class);
     }
 
     /**
@@ -177,6 +193,12 @@ class ReportTasksServiceTest extends TestCase
             ReportTasksService::class,
             'taskRepository',
             $this->taskRepositoryMock
+        );
+        $this->setPrivateProperty(
+            $reportTasksServicePartialMock,
+            ReportTasksService::class,
+            'manager',
+            $this->managerMock
         );
 
         return $reportTasksServicePartialMock;
