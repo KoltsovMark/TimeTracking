@@ -39,6 +39,10 @@ class CreateControllerTest extends AuthenticableControllerTest implements Valida
             \json_encode($params)
         );
 
+        //Check headers
+        $responseHeaders = $client->getResponse()->headers;
+        $this->assertTrue($responseHeaders->has('content-location'));
+
         // Check response code
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
 

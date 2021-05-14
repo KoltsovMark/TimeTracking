@@ -41,6 +41,10 @@ class CreateReportControllerTest extends AuthenticableControllerTest implements 
         // Check response code
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
 
+        //Check headers
+        $responseHeaders = $client->getResponse()->headers;
+        $this->assertTrue($responseHeaders->has('content-location'));
+
         // Check response status
         $responseContent = $this->decodeResponse($client->getResponse()->getContent());
 

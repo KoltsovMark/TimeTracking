@@ -100,6 +100,18 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
                     'format' => 'csv',
                 ],
             ],
+            [
+                'url' => 'api/users/register',
+                'method' => 'POST',
+                'auth' => false,
+                'params' => [
+                    'email' => 'smokeadmin@example.com',
+                    'password' => [
+                        'first' => '1234qwer$',
+                        'second' => '1234qwer$',
+                    ],
+                ],
+            ],
         ];
     }
 
