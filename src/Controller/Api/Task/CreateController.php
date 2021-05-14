@@ -85,7 +85,6 @@ class CreateController extends BaseController
      *         )
      *     )
      * )
-     *
      */
     public function new(Request $request)
     {

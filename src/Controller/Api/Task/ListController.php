@@ -6,16 +6,16 @@ namespace App\Controller\Api\Task;
 
 use App\Controller\Api\BaseController;
 use App\Dto\Api\Form\PaginatedPageTypeDto;
+use App\Entity\Task;
 use App\Form\Api\PaginatedPageType;
 use App\Repository\TaskRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Knp\Component\Pager\PaginatorInterface;
+use Nelmio\ApiDocBundle\Annotation as SWG;
+use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Nelmio\ApiDocBundle\Annotation as SWG;
-use OpenApi\Annotations as OA;
-use App\Entity\Task;
 
 class ListController extends BaseController
 {
