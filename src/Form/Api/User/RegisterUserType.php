@@ -10,12 +10,14 @@ use App\Service\User\UserService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RegisterUserType extends AbstractType
@@ -39,12 +41,19 @@ class RegisterUserType extends AbstractType
                 ]
             )
             ->add(
-                'password', PasswordType::class, [
+                'password', RepeatedType::class, [
+                    'type' => PasswordType::class,
                     'constraints' => [
                         new NotBlank(),
+                        new Regex([
+                            'pattern' => User::PASSWORD_PATTERN,
+                            'message' => 'Password should have a length of at least 8 characters and contain one letter, number, and special character(e.g. $)',
+                        ]),
+                        new Length(['max' => 255]),
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

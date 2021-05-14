@@ -6,8 +6,9 @@ namespace App\Dto\Api\User;
 
 class RegisterUserDto
 {
-    private ?string $email;
-    private ?string $password;
+    private ?string $email = null;
+    private ?string $password = null;
+    private ?string $passwordConfirmation = null;
 
     public function getEmail(): ?string
     {
@@ -29,6 +30,18 @@ class RegisterUserDto
     public function setPassword(?string $password): RegisterUserDto
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPasswordConfirmation(): ?string
+    {
+        return $this->passwordConfirmation;
+    }
+
+    public function setPasswordConfirmation(?string $passwordConfirmation): RegisterUserDto
+    {
+        $this->passwordConfirmation = $passwordConfirmation;
 
         return $this;
     }

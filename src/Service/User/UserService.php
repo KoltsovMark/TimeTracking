@@ -15,7 +15,7 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function isEmailExist(string $email): bool
+    public function isEmailExist(?string $email): bool
     {
         return (bool) $this->userRepository->findByEmail($email);
     }

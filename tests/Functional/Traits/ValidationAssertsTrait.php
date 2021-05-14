@@ -21,12 +21,23 @@ trait ValidationAssertsTrait
         );
 
         // Check validation
-        $resultErrors = \array_filter($requestContent['errors']['children']);
-        $this->assertCount(count($expectedResult), $resultErrors);
+        $this->validateField('request', $requestContent['errors'], ['request' => $expectedResult]);
+    }
 
-        foreach ($resultErrors as $field => $fieldContent) {
-            $errors = $fieldContent['errors'];
-            $expectedErrors = $expectedResult[$field] ?? [];
+    protected function validateField(string $fieldName, array $fieldData, array $expectedResult)
+    {
+        if (\array_key_exists('children', $fieldData)) {
+            $resultErrors = \array_filter($fieldData['children']);
+
+            // Check that count of errors and expected errors are equal, no missed fields
+            $this->assertCount(count($expectedResult[$fieldName]), $resultErrors);
+
+            foreach ($resultErrors as $subFieldName => $fieldDetails) {
+                $this->validateField($subFieldName, $fieldDetails, [$subFieldName => $expectedResult[$fieldName][$subFieldName]]);
+            }
+        } else {
+            $errors = $fieldData['errors'];
+            $expectedErrors = $expectedResult[$fieldName] ?? [];
 
             // Check error messages count
             $this->assertCount(count($expectedErrors), $errors);

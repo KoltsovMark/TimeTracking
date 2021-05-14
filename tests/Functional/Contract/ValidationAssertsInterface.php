@@ -14,6 +14,8 @@ interface ValidationAssertsInterface
     public const CONSTRAINT_TYPE_MAX_LENGTH_VALUE = 'max_length';
     public const CONSTRAINT_TYPE_MAX_VALUE = 'max_value';
     public const CONSTRAINT_TYPE_UNDEFINED = 'undefined';
+    public const CONSTRAINT_TYPE_WRONG_PASSWORD_REGEX = 'password_wrong_regex';
+    public const CONSTRAINT_TYPE_EMAIL_EXISTS = 'email_exists';
 
     // Available constraint messages
     public const CONSTRAINT_MESSAGES = [
@@ -24,6 +26,8 @@ interface ValidationAssertsInterface
         self::CONSTRAINT_TYPE_MAX_LENGTH_VALUE => 'This value is too long. It should have max_length characters or less.',
         self::CONSTRAINT_TYPE_MAX_VALUE => 'This value should be max_value or less.',
         self::CONSTRAINT_TYPE_UNDEFINED => 'Constraint is undefined',
+        self::CONSTRAINT_TYPE_WRONG_PASSWORD_REGEX => 'Password should have a length of at least 8 characters and contain one letter, number, and special character(e.g. $)',
+        self::CONSTRAINT_TYPE_EMAIL_EXISTS => 'Email already in use',
     ];
 
     // Available message parameters for replacement

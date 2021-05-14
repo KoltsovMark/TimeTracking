@@ -22,7 +22,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     use TimestampableEntity;
-    
+
+    public const PASSWORD_PATTERN = '/.*^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/i';
     public const EMAIL_MAX_LENGTH = 180;
 
     /**
