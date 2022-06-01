@@ -17,6 +17,9 @@ RUN docker-php-ext-install gd
 WORKDIR /usr/src/app
 
 COPY --chown=${LOCAL_USER} ./ /usr/src/app
+RUN chown -R www-data /usr/src/app
+RUN chmod -R 777 /usr/src/app/var/cache
+RUN chmod -R 777 /usr/src/app/var/log
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
