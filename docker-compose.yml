@@ -23,6 +23,9 @@ services:
             - .env
             - .env.local
         user: ${LOCAL_USER}
+        volumes:
+            # делаем ссылку с теущей папки на папку /usr/src/app в докере, чтобы не пересобирать контейнер при изменениях в коде
+            - .:/usr/src/app
         networks:
             - app-network
 
